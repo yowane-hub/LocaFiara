@@ -7,7 +7,7 @@
 $host = 'localhost';       // Adresse du serveur de base de données
 $dbname = 'LocaFiara';    // Nom de la base de données du projet
 $username = 'root';      // Nom d'utilisateur MySQL par défaut sous Kali Linux
-$password = '';         // Mot de passe
+$password = 'yowane1234';         // Mot de passe
 
 try {
     // Initialisation de la connexion PDO avec encodage UTF-8 et gestion rigoureuse des erreurs
