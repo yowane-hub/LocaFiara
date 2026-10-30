@@ -1,0 +1,16 @@
+/* Style du pied de page (Footer)                    */
+/* Rôle : Fond sombre et texte discret               */
+
+.site-footer {
+    background-color: #0f172a; /* Ardoise très sombre */
+    color: #94a3b8; /* Gris clair */
+    text-align: center;
+    padding: 25px 20px;
+    font-size: 13px;
+    margin-top: auto;
+    border-top: 1px solid #1e293b;
+}
+
+.site-footer p {
+    margin: 0;
+}
