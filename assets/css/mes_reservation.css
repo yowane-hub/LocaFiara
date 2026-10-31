@@ -1,0 +1,133 @@
+
+/* Style de la page "Mes Réservations"*/
+
+
+.reservations-header {
+    margin-bottom: 40px;
+}
+
+.reservations-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e3a8a;
+    margin: 0 0 8px 0;
+}
+
+.reservations-header p {
+    font-size: 15px;
+    color: #4b5563;
+    margin: 0;
+}
+
+/* Grille pour afficher les réservations sous forme de cartes */
+.reservations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+/* Carte de réservation individuelle */
+.reservation-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f3f4f6;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.reservation-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 15px;
+}
+
+.car-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px 0;
+}
+
+.reservation-dates {
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 15px;
+}
+
+.reservation-details {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Badge de statut (ex: en attente, confirmée) */
+.badge-status {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+/* Badge pour le statut en attente (Orange) */
+.badge-attente {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+/* Badge pour le statut confirmé (Vert) */
+.badge-confirmee {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-annulee {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.price-tag {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1e3a8a;
+}
+
+/* Message si aucune réservation n'existe */
+.no-reservations {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.no-reservations p {
+    color: #6b7280;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background-color: #1e3a8a;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1e40af;
+}

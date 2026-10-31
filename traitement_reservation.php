@@ -96,6 +96,11 @@ if ($succes) {
     echo "<div style='font-family: sans-serif; text-align: center; margin-top: 50px;'>";
     echo "<h2 style='color: #1e3a8a;'>🎉 Réservation enregistrée avec succès !</h2>";
     echo "<p>Montant total : <strong>" . number_format($montant_total, 0, ',', ' ') . " Ar</strong> pour " . $nb_jours . " jour(s).</p>";
+    if ($avec_chauffeur == 1) {
+        echo "<p style='color: #047857; font-weight: 600;'>🚗 Option chauffeur incluse (+ 20 000 Ar/jour)</p>";
+    } else {
+        echo "<p style='color: #6b7280;'>👤 Sans chauffeur (Conduite autonome)</p>";
+    }
     echo "<p>Acompte à verser : <strong>" . number_format($montant_acompte, 0, ',', ' ') . " Ar</strong></p>";
     echo "<br><a href='index.php' style='background: #1e3a8a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px;'>Retour à l'accueil</a>";
     echo "</div>";

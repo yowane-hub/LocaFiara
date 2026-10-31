@@ -1,66 +1,46 @@
-# 🚗 LocaFiara - Système de Réservation de Véhicules à Madagascar
+# LocaFiara 🚗
 
-**LocaFiara** est une application web modulaire et professionnelle dédiée à la location de véhicules (4x4, SUV, berlines) à Madagascar. Ce projet est développé dans le cadre d'un apprentissage approfondi du développement web full-stack (PHP natif, MySQL, CSS modulaire et JavaScript).
-
----
-
-## 🛠️ Stack Technique & Architecture
-Le projet a été pensé sans frameworks lourds pour garantir une maîtrise totale de chaque ligne de code :
-* **Backend :** PHP 8.4 (PDO pour la sécurité des requêtes).
-* **Base de données :** MySQL / MariaDB.
-* **Frontend :** HTML5, CSS3 pur (séparé en plusieurs fichiers modulaires).
-* **Scripts :** JavaScript pur (vanilla JS) pour la gestion et la validation dynamique.
+**LocaFiara** est une application web professionnelle de location de véhicules développée sur mesure pour le marché à Madagascar. Ce projet est réalisé dans le cadre d'un apprentissage approfondi du développement full-stack (PHP, MySQL, JavaScript).
 
 ---
 
-## 📂 Structure du Projet
-```text
-LocaFiara/
-├── config/
-│   └── db.php                  <-- Connexion sécurisée à la base de données (PDO)
-├── includes/
-│   ├── header.php              <-- En-tête global et barre de navigation
-│   └── footer.php              <-- Pied de page global
-├── assets/
-│   ├── css/
-│   │   ├── global.css          <-- Styles généraux et structure de base
-│   │   ├── header.css          <-- Style de l'en-tête
-│   │   ├── footer.css          <-- Style du pied de page
-│   │   ├── index.css           <-- Style de la page d'accueil / catalogue
-│   │   └── reservation.css     <-- Style de la page de réservation en 2 colonnes
-│   └── js/
-│       └── reservation.js      <-- Validation dynamique des formulaires
-├── index.php                   <-- Catalogue des véhicules disponibles
-├── reservation.php             <-- Page de détail et formulaire de réservation
-└── traitement_reservation.php  <-- Script PHP de traitement et d'insertion sécurisée en BDD
+## 🛠️ Architecture du Projet
 
-🚀 Fonctionnalités Réalisées (Jour 1)
+Le projet adopte une architecture modulaire et propre, sans framework lourd, reposant sur du code pur et pédagogique :
 
-    Architecture modulaire : Séparation propre des composants HTML, des feuilles de style CSS et des scripts JS.
+- `/assets/css/` : Fichiers de styles CSS séparés pour chaque page (`global.css`, `index.css`, `reservation.css`, `mes_reservations.css`).
+- `/assets/js/` : Scripts JavaScript pour l'interactivité côté client (`reservation.js`).
+- `/config/` : Configuration de la connexion à la base de données via PDO (`db.php`).
+- `/includes/` : Éléments réutilisables du site (`header.php`, `footer.php`).
+- Fichiers principaux à la racine : `index.php`, `reservation.php`, `traitement_reservation.php`, `mes_reservations.php`.
 
-    Catalogue dynamique (index.php) : Connexion à la base de données pour lister en temps réel les véhicules disponibles avec leurs catégories et tarifs.
+---
 
-    Page de réservation sur mesure (reservation.php) :
+## ✨ Fonctionnalités Actuelles
 
-        Affichage en 2 colonnes (carte du véhicule d'un côté, formulaire de l'autre).
+1. **Catalogue Dynamique (`index.php`) :**
+   - Affichage en temps réel des véhicules disponibles depuis la base de données MariaDB.
+   - Présentation claire des tarifs journaliers et des catégories.
 
-        Design soigné aux couleurs de LocaFiara (bleu profond et touches de jaune).
+2. **Formulaire de Réservation Interactif (`reservation.php`) :**
+   - Sélection des dates de début et de fin.
+   - Option d'ajout de chauffeur (+ 20 000 Ar/jour).
+   - **Calcul dynamique en direct (JavaScript)** du montant total de la location et de la durée en jours sans recharger la page.
 
-    Traitement sécurisé (traitement_reservation.php) :
+3. **Traitement Sécurisé des Données (`traitement_reservation.php`) :**
+   - Validation des données en PHP/PDO.
+   - Enregistrement automatique des réservations avec calcul de l'acompte (30%).
 
-        Vérification de la cohérence des dates de début et de fin.
+4. **Espace "Mes Réservations" (`mes_reservations.php`) :**
+   - Grille fluide et responsive présentant l'historique des réservations de l'utilisateur.
+   - **Badges de statut dynamiques** personnalisés (`en_attente`, `confirmee`, `annulee`).
+   - Compteur global du nombre de réservations.
 
-        Calcul automatique de la durée de location en jours.
+---
 
-        Calcul dynamique du montant total (incluant l'option chauffeur journalière).
+## 💻 Technologies Utilisées
 
-        Enregistrement sécurisé des données dans la table reservations via des requêtes préparées PDO.
-
-
-📌 À Faire / Prochaines Étapes (Pour Demain)
-
-    Amélioration du Frontend (JS) : Calculer et afficher le prix total en direct sur la page de réservation dès que l'utilisateur modifie les dates ou coche l'option chauffeur.
-
-    Gestion des utilisateurs : Mettre en place un système de connexion (login.php) pour lier dynamiquement les réservations au véritable user_id de la session.
-
-    Espace Client / Administration : Créer une interface pour visualiser la liste des réservations en cours et modifier leur statut.
+- **Côté Serveur (Backend) :** PHP (avec PDO pour la sécurité des requêtes SQL)
+- **Base de données :** MariaDB / MySQL
+- **Côté Client (Frontend) :** HTML5, CSS3 pur (grilles CSS, design moderne), JavaScript (Vanilla)
+- **Version de travail :** Linux (Kali Linux), Git & GitHub pour le contrôle de version en ligne de commande.
