@@ -1,8 +1,6 @@
-/* Style de l'en-tête (Header)                       */
-/* Rôle : Barre de navigation bleue avec logo et boutons */
-
+/* Style de l'en-tête (Header) */
 .site-header {
-    background-color: #1e3a8a; /* Bleu profond élégant */
+    background-color: #1e3a8a;
     color: #ffffff;
     padding: 15px 40px;
     display: flex;
@@ -23,7 +21,7 @@
 }
 
 .site-logo span {
-    color: #facc15; /* Jaune vif pour le mot "Fiara" */
+    color: #facc15;
 }
 
 /* Navigation principale */
@@ -38,24 +36,31 @@
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
-    transition: color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .site-nav a:hover {
-    color: #facc15; /* Survol en jaune */
+    color: #facc15;
 }
 
-/* Bouton spécial Inscription (jaune) */
-.btn-inscription {
+/* Message de bienvenue */
+.user-greeting {
+    color: #fef08a;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Bouton Inscription (Jaune) */
+.site-nav a.btn-inscription {
     background-color: #facc15;
-    color: #1e3a8a;
+    color: #1e3a8a !important;
     padding: 10px 20px;
     border-radius: 12px;
     font-weight: 700;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
 }
 
-.btn-inscription:hover {
+.site-nav a.btn-inscription:hover {
     background-color: #eab308;
+    color: #1e3a8a !important;
 }
+

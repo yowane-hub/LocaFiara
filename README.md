@@ -44,3 +44,17 @@ Le projet adopte une architecture modulaire et propre, sans framework lourd, rep
 - **Base de données :** MariaDB / MySQL
 - **Côté Client (Frontend) :** HTML5, CSS3 pur (grilles CSS, design moderne), JavaScript (Vanilla)
 - **Version de travail :** Linux (Kali Linux), Git & GitHub pour le contrôle de version en ligne de commande.
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 🚗 Loca<span>Fiara</span>

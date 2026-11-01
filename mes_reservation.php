@@ -7,8 +7,14 @@
 // 1. Inclusion de la connexion à la base de données
 require_once 'config/db.php';
 
-// 2. Définition de l'utilisateur actuel (ID 1 par défaut en attendant le système de session/login)
-$user_id = 1;
+// 2. Définition de l'utilisateur actuel
+$user_id = $_SESSION['user_id'] ?? null;
+
+if (!$user_id) {
+    // Si l'utilisateur n'est pas connecté, on le redirige vers le login
+    header("Location: login.php");
+    exit();
+}
 
 // 3. Requête SQL pour récupérer les réservations et les lier aux informations des véhicules
 $sql = "SELECT r.*, v.marque, v.modele, v.immatriculation 
