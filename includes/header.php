@@ -22,21 +22,30 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <header class="site-header">
     <a href="index.php" class="site-logo">
-         🚗 Loca<span>Fiara</span>
+        🚗 Loca<span>Fiara</span>
     </a>
 
     <nav class="site-nav">
         <a href="index.php">Accueil</a>
-        <a href="index.php">Nos Véhicules</a>
+        <a href="index.php#vehicules">Nos Véhicules</a>
 
         <?php if (isset($_SESSION['user_id'])): ?>
             <!-- Liens si l'utilisateur est connecté -->
             <a href="mes_reservations.php">Mes Réservations</a>
-            <span class="user-greeting">
-                Bonjour, <?= htmlspecialchars($_SESSION['user_prenom'] ?? 'Utilisateur'); ?>
-            </span>
-            <!-- Bouton Déconnexion avec style direct (fond rouge, même style que l'inscription) -->
+
+            <!-- 🔒 Lien affiché UNIQUEMENT si l'utilisateur est un administrateur -->
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                <a href="admin_dashboard.php" style="color: #f59e0b; font-weight: 700;">Espace Admin</a>
+            <?php else: ?>
+                <!-- 👋 Affiché uniquement si ce N'EST PAS un administrateur -->
+                <span class="user-greeting">
+                    Bonjour, <?= htmlspecialchars($_SESSION['user_prenom'] ?? 'Utilisateur'); ?>
+                </span>
+            <?php endif; ?>
+            
+            <!-- Bouton Déconnexion -->
             <a href="logout.php" style="background-color: #ef4444; color: #ffffff; padding: 10px 20px; border-radius: 12px; font-weight: 700; text-decoration: none;">Déconnexion</a>
+
         <?php else: ?>
             <!-- Liens si l'utilisateur est un visiteur -->
             <a href="login.php">Connexion</a>

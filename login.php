@@ -37,8 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_prenom'] = $user['prenom']; // <-- Indispensable pour récupérer le prénom !
             $_SESSION['user_email'] = $user['email'];
 
-            // Redirection vers l'accueil ou la page des réservations
-            header("Location: index.php");
+            // 🔒 AJOUT ESSENTIEL : Stockage du rôle dans la session
+            $_SESSION['role'] = $user['role'];
+
+            // Redirection intelligente selon le rôle de l'utilisateur
+            if ($user['role'] === 'admin') {
+                header("Location: admin_dashboard.php");
+            } else {
+                header("Location: index.php");
+            }
             exit();
 
         } else {
