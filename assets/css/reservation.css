@@ -1,6 +1,5 @@
 /* Style de la page de réservation (reservation.css) */
 
-
 .res-header {
     margin-bottom: 40px;
 }
@@ -51,9 +50,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #4b5563;
+    font-size: 48px;
     margin-bottom: 20px;
 }
 
@@ -133,8 +130,9 @@
     border: 1px solid #d1d5db;
     font-size: 14px;
     outline: none;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
-    transition: border-color 0.2s ease;
 }
 
 .form-control:focus {
@@ -142,55 +140,32 @@
     box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
 
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 20px 0 25px 0;
-}
-
-.checkbox-container input {
-    width: 18px;
-    height: 18px;
-    accent-color: #1e3a8a;
-    cursor: pointer;
-}
-
-.checkbox-container label {
-    font-size: 14px;
-    color: #374151;
-    font-weight: 500;
-    cursor: pointer;
-    margin: 0;
-}
-
 .btn-submit {
     width: 100%;
     background-color: #1e3a8a;
-    color: white;
+    color: #ffffff;
+    padding: 16px;
     border: none;
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 15px;
+    border-radius: 14px;
     font-weight: 700;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .btn-submit:hover {
-    background-color: #1e40af;
+    background-color: #1d4ed8;
 }
 
 .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     color: #1e3a8a;
+    text-decoration: none;
     font-weight: 600;
     font-size: 14px;
-    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .back-link:hover {
+    color: #1d4ed8;
     text-decoration: underline;
 }

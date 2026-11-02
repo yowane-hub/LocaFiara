@@ -2,18 +2,18 @@
 /* Style de la page "Mes Réservations"*/
 
 
-.reservations-header {
+.res-header {
     margin-bottom: 40px;
 }
 
-.reservations-header h1 {
+.res-header h1 {
     font-size: 32px;
     font-weight: 800;
     color: #1e3a8a;
     margin: 0 0 8px 0;
 }
 
-.reservations-header p {
+.res-header p {
     font-size: 15px;
     color: #4b5563;
     margin: 0;

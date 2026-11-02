@@ -1,109 +1,108 @@
 <?php
 /**
  * Fichier : traitement_reservation.php
- * Rôle : Traiter le formulaire de réservation et l'enregistrer pour l'utilisateur connecté.
+ * Rôle : Traitement sécurisé de la réservation, calcul dynamique du montant total 
+ *        (tarif journalier du véhicule + option chauffeur) et enregistrement en base de données.
  */
 
-// 1. Démarrage de la session
+// Démarrage de la session pour identifier l'utilisateur connecté
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Inclusion de la configuration de la base de données
-require_once 'config/db.php';
-
-// 2. Sécurité : Vérifier si l'utilisateur est bien connecté
+// 1. Sécurité : Vérification si l'utilisateur est bien connecté
 if (!isset($_SESSION['user_id'])) {
-    // S'il n'est pas connecté, on le redirige vers la page de connexion
+    // Si non connecté, redirection vers la page de connexion
     header("Location: login.php");
     exit();
 }
 
-// Récupération de l'ID de l'utilisateur connecté
-$user_id = $_SESSION['user_id'];
+// Inclusion du fichier de connexion à la base de données (PDO)
+require_once 'config/db.php';
 
-// 3. Vérification si le formulaire a été soumis en POST
+// 2. Vérification de la méthode de la requête HTTP (doit être POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // Récupération des données du formulaire
-    $vehicle_id         = $_POST['vehicle_id'] ?? null;
-    $date_debut         = trim($_POST['date_debut'] ?? '');
-    $date_fin           = trim($_POST['date_fin'] ?? '');
-    $ville_depart       = trim($_POST['ville_depart'] ?? '');
-    $ville_restitution  = trim($_POST['ville_restitution'] ?? '');
-    $driver_id          = !empty($_POST['driver_id']) ? $_POST['driver_id'] : null;
+    // Récupération des données envoyées par le formulaire de réservation
+    $user_id = $_SESSION['user_id'];
+    $vehicle_id = $_POST['vehicle_id'] ?? null;
+    $date_debut = $_POST['date_debut'] ?? null;
+    $date_fin = $_POST['date_fin'] ?? null;
+    $avec_chauffeur = isset($_POST['avec_chauffeur']) ? 1 : 0; // 1 si coché, 0 sinon
 
-    // 4. Validation basique des champs obligatoires
-    if (empty($vehicle_id) || empty($date_debut) || empty($date_fin) || empty($ville_depart) || empty($ville_restitution)) {
-        die("Erreur : Tous les champs obligatoires doivent être remplis.");
+    // Attribution automatique des villes par défaut (Antsirabe) en arrière-plan
+    $ville_depart = "Antsirabe";
+    $ville_restitution = "Antsirabe";
+
+    // Validation de base : s'assurer que les champs obligatoires ne sont pas vides
+    if (empty($vehicle_id) || empty($date_debut) || empty($date_fin)) {
+        die("Erreur : Tous les champs obligatoires (véhicule et dates) doivent être remplis.");
     }
 
-    // 5. Calcul des montants et de la durée (côté serveur pour des raisons de sécurité)
-    // Récupération du prix journalier du véhicule
-    $sql_vehicule = "SELECT prix_journalier FROM vehicles WHERE id = ?";
-    $stmt_vehicule = $pdo->prepare($sql_vehicule);
-    $stmt_vehicule->execute([$vehicle_id]);
-    $vehicule = $stmt_vehicule->fetch();
+    // 3. Récupération du tarif journalier exact du véhicule depuis la base de données
+    $stmt = $pdo->prepare("SELECT prix_par_jour FROM vehicles WHERE id = ?");
+    $stmt->execute([$vehicle_id]);
+    $vehicle = $stmt->fetch();
 
-    if (!$vehicule) {
+    if (!$vehicle) {
         die("Erreur : Véhicule introuvable.");
     }
 
-    $prix_journalier = $vehicule['prix_journalier'];
+    $prix_par_jour = (float)$vehicle['prix_par_jour'];
 
-    // Calcul du nombre de jours
-    $timestamp_debut = strtotime($date_debut);
-    $timestamp_fin = strtotime($date_fin);
+    // 4. Calcul de la durée du séjour en jours
+    $debut = new DateTime($date_debut);
+    $fin = new DateTime($date_fin);
     
-    if ($timestamp_fin <= $timestamp_debut) {
-        die("Erreur : La date de fin doit être postérieure à la date de début.");
+    // Vérification chronologique des dates
+    if ($fin < $debut) {
+        die("Erreur : La date de fin doit être postérieure ou égale à la date de début.");
     }
 
-    $nb_jours = ceil(($timestamp_fin - $timestamp_debut) / (60 * 60 * 24));
-    
-    // Calcul du montant total (exemple de base + option chauffeur si sélectionné)
-    $frais_chauffeur = $driver_id ? (20000 * $nb_jours) : 0;
-    $montant_total = ($prix_journalier * $nb_jours) + $frais_chauffeur;
-    
-    // Calcul de l'acompte (30%)
-    $montant_acompte = $montant_total * 0.30;
-    $montant_solde = $montant_total - $montant_acompte;
-    $montant_caution = 100000; // Caution fixe par exemple
-    $statut_reservation = 'en_attente';
+    // Calcul de l'intervalle entre les deux dates (+1 pour inclure le premier jour de location)
+    $interval = $debut->diff($fin);
+    $jours = $interval->days + 1;
 
-    // 6. Insertion sécurisée dans la base de données
-    $sql_insert = "INSERT INTO reservations (
-                    user_id, vehicle_id, driver_id, ville_depart, ville_restitution, 
-                    date_debut, date_fin, montant_total, montant_acompte, 
-                    montant_solde, montant_caution, statut_reservation, created_at
-                   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+    // 5. Calcul du montant total de la location
+    // (Nombre de jours × Tarif journalier du véhicule)
+    $montant_total = $jours * $prix_par_jour;
 
-    $stmt_insert = $pdo->prepare($sql_insert);
+    // Si l'option chauffeur est cochée, on ajoute 20 000 Ar par jour
+    if ($avec_chauffeur) {
+        $montant_total += ($jours * 20000);
+    }
+
+    // Initialisation des autres champs financiers et du statut par défaut
+    $montant_acompte = 0;
+    $montant_solde = $montant_total;
+    $montant_caution = 0;
+    $statut_reservation = "en_attente";
+
+    // 6. Insertion sécurisée de la réservation dans la table 'reservations'
+    $sql = "INSERT INTO reservations (user_id, vehicle_id, ville_depart, ville_restitution, date_debut, date_fin, montant_total, montant_acompte, montant_solde, montant_caution, statut_reservation, created_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
     
-    $resultat = $stmt_insert->execute([
-        $user_id,
-        $vehicle_id,
-        $driver_id,
-        $ville_depart,
-        $ville_restitution,
-        $date_debut,
-        $date_fin,
-        $montant_total,
-        $montant_acompte,
-        $montant_solde,
-        $montant_caution,
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        $user_id, 
+        $vehicle_id, 
+        $ville_depart, 
+        $ville_restitution, 
+        $date_debut, 
+        $date_fin, 
+        $montant_total, 
+        $montant_acompte, 
+        $montant_solde, 
+        $montant_caution, 
         $statut_reservation
     ]);
 
-    if ($resultat) {
-        // Redirection vers la page des réservations de l'utilisateur
-        header("Location: mes_reservations.php");
-        exit();
-    } else {
-        echo "Une erreur est survenue lors de l'enregistrement de la réservation.";
-    }
+    // 7. Redirection vers l'historique des réservations de l'utilisateur en cas de succès
+    header("Location: mes_reservations.php");
+    exit();
+
 } else {
-    // Si on accède au fichier directement sans soumettre le formulaire
+    // Si l'accès au fichier se fait autrement que par POST, redirection vers l'accueil
     header("Location: index.php");
     exit();
 }
