@@ -67,3 +67,39 @@
     margin-bottom: 20px;
     text-align: center;
 }
+
+/* --- Style pour le conteneur du mot de passe et l'icône œil --- */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* On force l'input à laisser de la place à droite pour l'icône */
+.password-container .form-control {
+    width: 100%;
+    padding-right: 45px; 
+    box-sizing: border-box;
+}
+
+/* Positionnement parfait de l'œil à l'intérieur de la case, centré verticalement */
+.eye-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    padding: 0;
+    z-index: 10;
+}
+
+.eye-btn:hover {
+    color: #1e3a8a;
+}
