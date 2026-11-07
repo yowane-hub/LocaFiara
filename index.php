@@ -10,10 +10,7 @@ require_once 'config/db.php';
 // 2. Inclusion de l'en-tête du site
 require_once 'includes/header.php';
 ?>
-
-<!-- Liaison du CSS spécifique à l'accueil -->
 <link rel="stylesheet" href="assets/css/index.css">
-
 <main>
     <!-- En-tête de la page -->
     <div class="home-header">
@@ -29,36 +26,41 @@ require_once 'includes/header.php';
     // Récupération des véhicules disponibles dans la base de données
     $stmt = $pdo->query("SELECT v.*, c.nom AS categorie_nom 
                          FROM vehicles v 
-                         JOIN categories c ON v.category_id = c.id 
+                         LEFT JOIN categories c ON v.category_id = c.id 
                          WHERE v.statut = 'disponible'");
-    $vehicles = $stmt->fetchAll();
+    $vehicules = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
     <!-- Grille des véhicules -->
     <div class="vehicles-grid">
-        <?php foreach ($vehicles as $car): ?>
-            <div class="car-card">
-                <div>
+        <?php if (empty($vehicules)): ?>
+            <p>Aucun véhicule disponible pour le moment.</p>
+        <?php else: ?>
+            <?php foreach ($vehicules as $car): ?>
+                <div class="car-card">
                     <div class="car-thumb">
-                        🚗 <?= htmlspecialchars($car['marque'] . ' ' . $car['modele']); ?>
+                        <!-- Affichage de l'image stockée en binaire dans la base de données (Base64) -->
+                        <?php if (!empty($car['image'])): ?>
+                            <img src="data:image/jpeg;base64,<?= base64_encode($car['image']); ?>" alt="Photo du véhicule" class="vehicule-img" style="width: 100%; height: 160px; object-fit: cover; border-radius: 6px;">
+                        <?php else: ?>
+                            <div class="no-image" style="width: 100%; height: 160px; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-style: italic; border-radius: 6px;">Pas d'image</div>
+                        <?php endif; ?>
                     </div>
                     
-                    <span class="car-badge"><?= htmlspecialchars($car['categorie_nom']); ?></span>
+                    <span class="car-badge"><?= htmlspecialchars($car['categorie_nom'] ?? 'Général'); ?></span>
                     <h3 class="car-title"><?= htmlspecialchars($car['marque'] . ' ' . $car['modele']); ?></h3>
                     <p class="car-plate">Immatriculation : <?= htmlspecialchars($car['immatriculation']); ?></p>
-                </div>
-                
-                <div class="car-footer">
-                    <div>
+
+                    <div class="car-footer">
                         <span class="price-label">Tarif</span>
-                        <span class="price-value"><?= number_format($car['prix_par_jour'], 0, ',', ' '); ?> Ar</span> <span style="font-size: 13px; color: #6b7280;">/ jour</span>
+                        <span class="price-value"><?= number_format($car['prix_par_jour'], 0, ',', ' '); ?> Ar</span>/ jour
+                        <a href="reservation.php?id=<?= $car['id']; ?>" class="btn-reserve">
+                            Réserver
+                        </a>
                     </div>
-                    <a href="reservation.php?id=<?= $car['id']; ?>" class="btn-reserve">
-                        Réserver
-                    </a>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 </main>
 

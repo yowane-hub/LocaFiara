@@ -116,3 +116,14 @@
 .btn-reserve:hover {
     background-color: #1e40af;
 }
+
+/* --- Ajustement propre de l'image dans la carte --- */
+.car-thumb {
+    overflow: hidden; /* Empêche l'image de dépasser des bords arrondis */
+}
+
+.car-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recadre l'image proprement sans déformation */
+}

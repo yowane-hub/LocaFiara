@@ -147,3 +147,26 @@
     margin-top: 12px;
     font-size: 15px;
 }
+
+/* Style pour l'image du véhicule dans la carte */
+.vehicule-card img.vehicule-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover; /* Recadre l'image proprement sans la déformer */
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* Style si le véhicule n'a pas d'image */
+.vehicule-card .no-image {
+    width: 100%;
+    height: 150px;
+    background-color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-style: italic;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}   
