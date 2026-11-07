@@ -52,7 +52,11 @@ require_once 'includes/header.php';
         <div class="res-card">
             <div>
                 <div class="res-car-img">
-                    🚗
+                    <?php if (!empty($vehicle['image'])): ?>
+                        <img src="data:image/jpeg;base64,<?= base64_encode($vehicle['image']); ?>" alt="Photo du véhicule">
+                    <?php else: ?>
+                        🚗
+                    <?php endif; ?>
                 </div>
                 <span class="res-badge"><?= htmlspecialchars($vehicle['categorie_nom'] ?? 'Véhicule'); ?></span>
                 <h2 class="res-title"><?= htmlspecialchars($vehicle['marque'] . ' ' . $vehicle['modele']); ?></h2>
