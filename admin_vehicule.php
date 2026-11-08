@@ -108,7 +108,7 @@ $stmt = $pdo->query("SELECT * FROM vehicles ORDER BY id DESC");
 $vehicules = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Inclusion du header
-include 'includes/header.php';
+include 'includes/admin_header.php';
 ?>
 <link rel="stylesheet" href="assets/css/admin_vehicule.css">
 
