@@ -1,8 +1,11 @@
-/* Style de la page d'administration des véhicules {admin_vehicules.css} */
+/*
+ * Fichier : admin_vehicule.css
+ * Rôle : Styles pour la page d'administration des véhicules
+ */
 
 .admin-main {
-    max-width: 1000px;
-    margin: 40px auto;
+    max-width: 1100px;
+    margin: 48px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -45,7 +48,7 @@
     font-weight: 600;
 }
 
-/* Carte du formulaire d'ajout */
+/* Carte du formulaire d'ajout / modification */
 .form-card {
     background: #ffffff;
     padding: 25px;
@@ -74,13 +77,22 @@
     text-transform: uppercase;
 }
 
-.form-group-admin input {
+.form-group-admin input,
+.form-group-admin select {
     width: 100%;
     padding: 12px;
     border: 1px solid #d1d5db;
     border-radius: 8px;
     font-size: 14px;
     box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.form-group-admin input:focus,
+.form-group-admin select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .btn-submit {
@@ -103,14 +115,15 @@
 /* Grille d'affichage des véhicules */
 .section-title {
     color: #1e3a8a;
-    font-size: 20px;
-    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
-.vehicules-grid {
+.vehicles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
 }
 
 .vehicule-card {
@@ -119,63 +132,79 @@
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Vignette image propre */
+.car-thumb {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #f3f4f6;
+}
+
+.car-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.car-thumb .no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* Badge de catégorie */
+.car-badge {
+    background-color: #3b82f6;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 12px;
+    width: fit-content;
+    text-transform: uppercase;
 }
 
 .vehicule-card h4 {
     color: #1e3a8a;
-    margin-bottom: 5px;
-    font-size: 16px;
-}
-
-.vehicule-cat {
-    font-size: 12px;
-    color: #6b7280;
-    text-transform: uppercase;
+    margin: 0 0 8px 0;
+    font-size: 18px;
     font-weight: 700;
-    margin-bottom: 10px;
 }
 
 .vehicule-info {
-    margin: 8px 0;
+    margin: 4px 0;
     font-size: 14px;
-    color: #374151;
+    color: #4b5563;
 }
 
 .vehicule-price {
     font-weight: bold;
-    color: #059669;
+    color: #1e3a8a;
     margin-top: 12px;
-    font-size: 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
 }
 
-/* Style pour l'image du véhicule dans la carte */
-.vehicule-card img.vehicule-img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover; /* Recadre l'image proprement sans la déformer */
-    border-radius: 6px;
-    margin-bottom: 10px;
-}
-
-/* Style si le véhicule n'a pas d'image */
-.vehicule-card .no-image {
-    width: 100%;
-    height: 150px;
-    background-color: #e2e8f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-style: italic;
-    border-radius: 6px;
-    margin-bottom: 10px;
-}   
-
-/* --- Boutons d'action sur les cartes véhicules (Modifier / Supprimer) --- */
+/* Boutons d'action sur les cartes véhicules */
 .vehicule-actions {
-    padding: 0 15px 15px 15px;
+    padding-top: 15px;
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    border-top: 1px solid #f3f4f6;
 }
 
 .btn-edit {
@@ -183,10 +212,10 @@
     text-align: center;
     background-color: #3b82f6;
     color: white;
-    padding: 8px;
+    padding: 10px;
     border-radius: 6px;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     transition: background-color 0.2s ease;
 }
@@ -200,10 +229,10 @@
     text-align: center;
     background-color: #ef4444;
     color: white;
-    padding: 8px;
+    padding: 10px;
     border-radius: 6px;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     transition: background-color 0.2s ease;
 }

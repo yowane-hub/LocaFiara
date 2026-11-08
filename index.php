@@ -1,59 +1,85 @@
 <?php
-/**
+/*
  * Fichier : index.php
- * Rôle : Page d'accueil / Catalogue des véhicules disponibles
+ * Rôle : Page d'accueil et catalogue public avec filtrage par catégorie
  */
 
-// 1. Connexion à la base de données
 require_once 'config/db.php';
-
-// 2. Inclusion de l'en-tête du site
 require_once 'includes/header.php';
+
+// 1. Récupération de la catégorie filtrée via l'URL (ex: index.php?cat=1)
+$selected_cat = isset($_GET['cat']) ? intval($_GET['cat']) : 0;
+
+// 2. Récupération de toutes les catégories pour afficher les boutons de filtre
+$stmt_categories = $pdo->query("SELECT * FROM categories ORDER BY id ASC");
+$all_categories = $stmt_categories->fetchAll(PDO::FETCH_ASSOC);
+
+// 3. Construction de la requête SQL de filtrage des véhicules disponibles
+if ($selected_cat > 0) {
+    $stmt_vehicles = $pdo->prepare("SELECT v.*, c.nom AS categorie_nom 
+                                     FROM vehicles v 
+                                     LEFT JOIN categories c ON v.category_id = c.id 
+                                     WHERE v.statut = 'disponible' AND v.category_id = :cat_id
+                                     ORDER BY v.id DESC");
+    $stmt_vehicles->execute([':cat_id' => $selected_cat]);
+} else {
+    $stmt_vehicles = $pdo->query("SELECT v.*, c.nom AS categorie_nom 
+                                  FROM vehicles v 
+                                  LEFT JOIN categories c ON v.category_id = c.id 
+                                  WHERE v.statut = 'disponible'
+                                  ORDER BY v.id DESC");
+}
+$vehicules = $stmt_vehicles->fetchAll(PDO::FETCH_ASSOC);
 ?>
+ 
 <link rel="stylesheet" href="assets/css/index.css">
-<main>
+
+<main class="home-main">
     <!-- En-tête de la page -->
     <div class="home-header">
         <h1>Louez votre véhicule à Madagascar</h1>
-        <p>Des 4x4 et voitures de qualité pour tous vos déplacements en toute sérénité.</p>
+        <p>Choisissez parmi notre flotte de voitures, motos et camions en toute sérénité.</p>
     </div>
 
-    <h2 style="font-size: 22px; font-weight: 700; color: #1e3a8a; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb;">
-        Véhicules Disponibles
-    </h2>
+    <!-- Barre de filtrage par catégorie -->
+    <div class="filter-container">
+        <a href="index.php" class="filter-btn <?= ($selected_cat === 0) ? 'active' : ''; ?>">
+            Tous
+        </a>
+        <?php foreach ($all_categories as $cat): ?>
+            <a href="index.php?cat=<?= $cat['id']; ?>" class="filter-btn <?= ($selected_cat === $cat['id']) ? 'active' : ''; ?>">
+                <?= htmlspecialchars($cat['nom']); ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
 
-    <?php
-    // Récupération des véhicules disponibles dans la base de données
-    $stmt = $pdo->query("SELECT v.*, c.nom AS categorie_nom 
-                         FROM vehicles v 
-                         LEFT JOIN categories c ON v.category_id = c.id 
-                         WHERE v.statut = 'disponible'");
-    $vehicules = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    ?>
-
-    <!-- Grille des véhicules -->
+    <!-- Grille des véhicules disponibles -->
     <div class="vehicles-grid">
         <?php if (empty($vehicules)): ?>
-            <p>Aucun véhicule disponible pour le moment.</p>
+            <p style="grid-column: 1 / -1; text-align: center; color: #6b7280; padding: 40px 0;">
+                Aucun véhicule disponible dans cette catégorie pour le moment.
+            </p>
         <?php else: ?>
             <?php foreach ($vehicules as $car): ?>
                 <div class="car-card">
+                    <!-- Vignette image propre -->
                     <div class="car-thumb">
-                        <!-- Affichage de l'image stockée en binaire dans la base de données (Base64) -->
                         <?php if (!empty($car['image'])): ?>
-                            <img src="data:image/jpeg;base64,<?= base64_encode($car['image']); ?>" alt="Photo du véhicule" class="vehicule-img" style="width: 100%; height: 160px; object-fit: cover; border-radius: 6px;">
+                            <img src="data:image/jpeg;base64,<?= base64_encode($car['image']); ?>" alt="Photo du véhicule">
                         <?php else: ?>
-                            <div class="no-image" style="width: 100%; height: 160px; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-style: italic; border-radius: 6px;">Pas d'image</div>
+                            <div class="no-image">Pas d'image</div>
                         <?php endif; ?>
                     </div>
                     
                     <span class="car-badge"><?= htmlspecialchars($car['categorie_nom'] ?? 'Général'); ?></span>
+                    
                     <h3 class="car-title"><?= htmlspecialchars($car['marque'] . ' ' . $car['modele']); ?></h3>
-                    <p class="car-plate">Immatriculation : <?= htmlspecialchars($car['immatriculation']); ?></p>
+                    <p class="car-plate">Immatriculation : <strong><?= htmlspecialchars($car['immatriculation']); ?></strong></p>
 
                     <div class="car-footer">
-                        <span class="price-label">Tarif</span>
-                        <span class="price-value"><?= number_format($car['prix_par_jour'], 0, ',', ' '); ?> Ar</span>/ jour
+                        <div>
+                            <span class="price-value"><?= number_format($car['prix_par_jour'], 0, ',', ' '); ?> Ar</span> / jour
+                        </div>
                         <a href="reservation.php?id=<?= $car['id']; ?>" class="btn-reserve">
                             Réserver
                         </a>
@@ -64,7 +90,4 @@ require_once 'includes/header.php';
     </div>
 </main>
 
-<?php
-// 3. Inclusion du pied de page
-require_once 'includes/footer.php';
-?>
+<?php require_once 'includes/footer.php'; ?>

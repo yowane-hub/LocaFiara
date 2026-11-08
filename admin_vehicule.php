@@ -1,9 +1,9 @@
 <?php
-// Connexion centralisée
+/*
+ * Fichier : admin_vehicule.php
+ * Rôle : Gestion des véhicules (Ajout, Modification, Suppression)
+ */
 require_once 'config/db.php';
-
-$message = "";
-$error = "";
 
 // Variables pour le mode édition
 $edit_mode = false;
@@ -17,6 +17,13 @@ $vehicule_a_modifier = [
     'category_id' => 1
 ];
 
+$message = "";
+$error = "";
+
+// Récupération dynamique de la liste des catégories
+$stmt_cat = $pdo->query("SELECT * FROM categories ORDER BY id ASC");
+$categories_liste = $stmt_cat->fetchAll(PDO::FETCH_ASSOC);
+
 // 1. Traitement de la suppression
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
     $id_del = intval($_GET['id']);
@@ -25,11 +32,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         $stmt_del->execute([$id_del]);
         $message = "Véhicule supprimé avec succès !";
     } catch (PDOException $e) {
-        $error = "Impossible de supprimer ce véhicule (il est peut-être lié à une réservation).";
+        $error = "Impossible de supprimer ce véhicule (il est lié à une réservation).";
     }
 }
 
-// 2. Récupération des données si on clique sur "Modifier"
+// 2. Récupération des données en mode édition
 if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
     $id_edit = intval($_GET['id']);
     $stmt_edit = $pdo->prepare("SELECT * FROM vehicles WHERE id = ?");
@@ -41,19 +48,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) 
     }
 }
 
-// 3. Traitement de l'enregistrement (Ajout ou Modification)
+// 3. Traitement du formulaire (Création ou Mise à jour)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sauvegarder_vehicule'])) {
-    $id = $_POST['id_vehicule'] ?? '';
-    $marque = trim($_POST['marque'] ?? '');
-    $modele = trim($_POST['modele'] ?? '');
-    $immatriculation = trim($_POST['immatriculation'] ?? '');
-    $prix_par_jour = trim($_POST['prix_par_jour'] ?? '');
-    $statut = $_POST['statut'] ?? 'disponible';
-    $category_id = $_POST['category_id'] ?? 1;
+    $smarque = trim($_POST['marque'] ?? '');
+    $smodele = trim($_POST['modele'] ?? '');
+    $simmatriculation = trim($_POST['immatriculation'] ?? '');
+    $sprix_par_jour = trim($_POST['prix_par_jour'] ?? '');
+    $sstatut = $_POST['statut'] ?? 'disponible';
+    $scategory_id = intval($_POST['category_id'] ?? 1);
+    $sid = $_POST['id_vehicule'] ?? '';
 
-    if (!empty($marque) && !empty($modele) && !empty($immatriculation) && !empty($prix_par_jour)) {
-        
-        // Gestion de l'image binaire
+    if (!empty($smarque) && !empty($smodele) && !empty($simmatriculation) && !empty($sprix_par_jour)) {
         $image_data = null;
         $update_image_sql = "";
         if (isset($_FILES['Image']) && $_FILES['Image']['error'] === UPLOAD_ERR_OK) {
@@ -62,39 +67,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sauvegarder_vehicule'
         }
 
         try {
-            if (!empty($id)) {
-                // MISE A JOUR (UPDATE)
+            if (!empty($sid)) {
                 $sql = "UPDATE vehicles SET category_id = :category_id, immatriculation = :immatriculation, 
                         marque = :marque, modele = :modele, prix_par_jour = :prix_par_jour, statut = :statut $update_image_sql 
                         WHERE id = :id";
                 $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->bindValue(':id', $sid, PDO::PARAM_INT);
             } else {
-                // INSERTION (CREATE)
                 $sql = "INSERT INTO vehicles (category_id, immatriculation, marque, modele, prix_par_jour, statut, image) 
                         VALUES (:category_id, :immatriculation, :marque, :modele, :prix_par_jour, :statut, :image)";
                 $stmt = $pdo->prepare($sql);
             }
 
-            $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
-            $stmt->bindParam(':immatriculation', $immatriculation);
-            $stmt->bindParam(':marque', $marque);
-            $stmt->bindParam(':modele', $modele);
-            $stmt->bindParam(':prix_par_jour', $prix_par_jour);
-            $stmt->bindParam(':statut', $statut);
-            
-            // Si on fait un update sans nouvelle image, on ne lie pas le paramètre image s'il n'est pas dans la requête
-            if (!empty($image_data) || empty($id)) {
-                $stmt->bindParam(':image', $image_data, PDO::PARAM_LOB);
+            $stmt->bindValue(':category_id', $scategory_id, PDO::PARAM_INT);
+            $stmt->bindValue(':immatriculation', $simmatriculation);
+            $stmt->bindValue(':marque', $smarque);
+            $stmt->bindValue(':modele', $smodele);
+            $stmt->bindValue(':prix_par_jour', $sprix_par_jour);
+            $stmt->bindValue(':statut', $sstatut);
+
+            if ($image_data !== null) {
+                $stmt->bindValue(':image', $image_data, PDO::PARAM_LOB);
             }
 
             $stmt->execute();
-            $message = !empty($id) ? "Véhicule mis à jour avec succès !" : "Véhicule ajouté avec succès !";
+            $message = !empty($sid) ? "Véhicule mis à jour avec succès !" : "Véhicule ajouté avec succès !";
             
-            // Réinitialisation du mode édition après succès
             $edit_mode = false;
-            $vehicule_a_modifier = ['id' => '', 'marque' => '', 'modele' => '', 'immatriculation' => '', 'prix_par_jour' => '', 'statut' => 'disponible', 'category_id' => 1];
-
+            $vehicule_a_modifier = [
+                'id' => '', 'marque' => '', 'modele' => '', 'immatriculation' => '', 
+                'prix_par_jour' => '', 'statut' => 'disponible', 'category_id' => 1
+            ];
         } catch (PDOException $e) {
             $error = "Erreur lors de l'enregistrement : " . $e->getMessage();
         }
@@ -103,13 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sauvegarder_vehicule'
     }
 }
 
-// Récupération de la liste des véhicules
-$stmt = $pdo->query("SELECT * FROM vehicles ORDER BY id DESC");
-$vehicules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Récupération de la liste des véhicules avec leurs catégories
+$stmt_veh = $pdo->query("SELECT v.*, c.nom AS categorie_nom FROM vehicles v LEFT JOIN categories c ON v.category_id = c.id ORDER BY v.id DESC");
+$vehicules = $stmt_veh->fetchAll(PDO::FETCH_ASSOC);
 
-// Inclusion du header
+// Inclusion de l'en-tête admin unifié
 include 'includes/admin_header.php';
 ?>
+
 <link rel="stylesheet" href="assets/css/admin_vehicule.css">
 
 <main class="admin-main">
@@ -124,13 +128,23 @@ include 'includes/admin_header.php';
         <div class="alert-error"><?= htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
-    <!-- Formulaire d'ajout ou de modification -->
+    <!-- Formulaire d'ajout / modification -->
     <div class="form-card">
         <h3><?= $edit_mode ? "Modifier le véhicule #" . $vehicule_a_modifier['id'] : "Ajouter un nouveau véhicule"; ?></h3>
         <form action="" method="POST" enctype="multipart/form-data">
-            
-            <!-- Champ caché pour stocker l'ID en cas de modification -->
+
             <input type="hidden" name="id_vehicule" value="<?= htmlspecialchars($vehicule_a_modifier['id']); ?>">
+
+            <div class="form-group-admin">
+                <label for="category_id">Catégorie du véhicule</label>
+                <select name="category_id" id="category_id" required>
+                    <?php foreach ($categories_liste as $cat): ?>
+                        <option value="<?= $cat['id']; ?>" <?= ($vehicule_a_modifier['category_id'] == $cat['id']) ? 'selected' : ''; ?>>
+                            <?= htmlspecialchars($cat['nom']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
             <div class="form-group-admin">
                 <label for="marque">Marque</label>
@@ -169,37 +183,44 @@ include 'includes/admin_header.php';
             <button type="submit" name="sauvegarder_vehicule" class="btn-submit">
                 <?= $edit_mode ? "Mettre à jour le véhicule" : "Enregistrer le véhicule"; ?>
             </button>
-            
+
             <?php if ($edit_mode): ?>
-                <a href="admin_vehicule.php" style="display:inline-block; margin-top:15px; text-decoration:none; color:#6b7280; font-size:14px;">Annuler la modification</a>
+                <a href="admin_vehicule.php" style="display: inline-block; margin-top: 15px; text-decoration: none; color: #6b7280; font-size: 14px;">Annuler la modification</a>
             <?php endif; ?>
         </form>
     </div>
 
     <!-- Liste des véhicules enregistrés -->
     <h3 class="section-title">Véhicules enregistrés dans le système</h3>
-    
-    <div class="vehicules-grid">
+
+    <div class="vehicles-grid">
         <?php if (empty($vehicules)): ?>
             <p>Aucun véhicule enregistré pour le moment.</p>
         <?php else: ?>
             <?php foreach ($vehicules as $v): ?>
                 <div class="vehicule-card">
-                    <?php if (!empty($v['image'])): ?>
-                        <img src="data:image/jpeg;base64,<?= base64_encode($v['image']); ?>" alt="Photo du véhicule" class="vehicule-img">
-                    <?php else: ?>
-                        <div class="no-image">Pas d'image</div>
-                    <?php endif; ?>
+                    <!-- Conteneur d'image propre -->
+                    <div class="car-thumb">
+                        <?php if (!empty($v['image'])): ?>
+                            <img src="data:image/jpeg;base64,<?= base64_encode($v['image']); ?>" alt="Photo du véhicule">
+                        <?php else: ?>
+                            <div class="no-image">Pas d'image</div>
+                        <?php endif; ?>
+                    </div>
 
-                    <h4><?= htmlspecialchars(($v['marque'] ?? '') . ' ' . ($v['modele'] ?? '')); ?></h4>
+                    <span class="car-badge">
+                        <?= htmlspecialchars($v['categorie_nom'] ?? 'Général'); ?>
+                    </span>
+
+                    <h4><?= htmlspecialchars($v['marque'] ?? '') . ' ' . htmlspecialchars($v['modele'] ?? ''); ?></h4>
                     <div class="vehicule-info">Immat : <strong><?= htmlspecialchars($v['immatriculation'] ?? 'N/C'); ?></strong></div>
                     <div class="vehicule-info">Statut : <em><?= htmlspecialchars($v['statut'] ?? 'disponible'); ?></em></div>
                     <div class="vehicule-price"><?= number_format($v['prix_par_jour'] ?? 0, 0, ',', ' '); ?> Ar / jour</div>
-                    
+
                     <!-- Boutons Modifier / Supprimer -->
-                    <div class="vehicule-actions" style="padding: 0 15px 15px 15px; display: flex; gap: 10px;">
-                        <a href="admin_vehicule.php?action=edit&id=<?= $v['id']; ?>" class="btn-edit" style="flex:1; text-align:center; background:#3b82f6; color:white; padding:8px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600;">Modifier</a>
-                        <a href="admin_vehicule.php?action=delete&id=<?= $v['id']; ?>" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?');" style="flex:1; text-align:center; background:#ef4444; color:white; padding:8px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600;">Supprimer</a>
+                    <div class="vehicule-actions">
+                        <a href="admin_vehicule.php?action=edit&id=<?= $v['id']; ?>" class="btn-edit">Modifier</a>
+                        <a href="admin_vehicule.php?action=delete&id=<?= $v['id']; ?>" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?');">Supprimer</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -207,7 +228,4 @@ include 'includes/admin_header.php';
     </div>
 </main>
 
-<?php 
-// Inclusion du footer
-include 'includes/footer.php'; 
-?>
+<?php include 'includes/footer.php'; ?>
