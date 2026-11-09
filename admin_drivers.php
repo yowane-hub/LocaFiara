@@ -158,8 +158,8 @@ include 'includes/admin_header.php';
 
                     <!-- Boutons Modifier / Supprimer -->
                     <div class="driver-actions">
-                        <a href="admin_driver.php?action=edit&id=<?= $d['id']; ?>" class="btn-edit">Modifier</a>
-                        <a href="admin_driver.php?action=delete&id=<?= $d['id']; ?>" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce chauffeur ?');">Supprimer</a>
+                        <a href="admin_drivers.php?action=edit&id=<?= $d['id']; ?>" class="btn-edit">Modifier</a>
+                        <a href="admin_drivers.php?action=delete&id=<?= $d['id']; ?>" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce chauffeur ?');">Supprimer</a>
                     </div>
                 </div>
             <?php endforeach; ?>

@@ -36,10 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reservation_id'], $_P
 }
 
 // 2. Récupération de toutes les réservations avec les infos clients et véhicules
-$sql = "SELECT r.*, v.marque, v.modele, v.immatriculation, u.nom AS client_nom, u.email AS client_email 
+$sql = "SELECT r.*, v.marque, v.modele, v.immatriculation, u.nom AS client_nom, u.email AS client_email, 
+               d.nom AS driver_nom, d.prenom AS driver_prenom 
         FROM reservations r 
         JOIN vehicles v ON r.vehicle_id = v.id 
         JOIN users u ON r.user_id = u.id 
+        LEFT JOIN drivers d ON r.driver_id = d.id 
         ORDER BY r.created_at DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -121,6 +123,16 @@ $chiffre_affaires = array_sum(array_column($toutes_reservations, 'montant_total'
                         <p class="res-dates">
                             Du : <strong><?= htmlspecialchars($res['date_debut']); ?></strong> Au : <strong><?= htmlspecialchars($res['date_fin']); ?></strong>
                         </p>
+
+                        <?php if (!empty($res['driver_nom'])): ?>
+                            <p style="font-size: 13px; color: #1e3a8a; margin-top: 5px;">
+                                👨‍✈️ Chauffeur assigné : <strong><?= htmlspecialchars($res['driver_nom'] . ' ' . $res['driver_prenom']); ?></strong>
+                            </p>
+                        <?php else: ?>
+                            <p style="font-size: 13px; color: #6b7280; margin-top: 5px;">
+                                🚗 Sans chauffeur (Autonome)
+                            </p>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Montant et formulaire de mise à jour du statut -->

@@ -1,7 +1,7 @@
 <?php
 /**
  * Fichier : traitement_reservation.php
- * Rôle : Traitement sécurisé de la réservation, calcul dynamique du montant total 
+ * Rôle : Traitement sécurisé de la réservation, calcul dynamique du montant total
  *        (tarif journalier du véhicule + option chauffeur) et enregistrement en base de données.
  */
 
@@ -23,14 +23,16 @@ require_once 'config/db.php';
 // 2. Vérification de la méthode de la requête HTTP (doit être POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // Récupération des données envoyées par le formulaire de réservation
+    // Récupération des données envoyées par le formulaire
     $user_id = $_SESSION['user_id'];
     $vehicle_id = $_POST['vehicle_id'] ?? null;
     $date_debut = $_POST['date_debut'] ?? null;
     $date_fin = $_POST['date_fin'] ?? null;
-    $avec_chauffeur = isset($_POST['avec_chauffeur']) ? 1 : 0; // 1 si coché, 0 sinon
+    
+    // Récupération de l'ID du chauffeur sélectionné (null si vide)
+    $driver_id = !empty($_POST['driver_id']) ? intval($_POST['driver_id']) : null;
 
-    // Attribution automatique des villes par défaut (Antsirabe) en arrière-plan
+    // Attribution automatique des villes par défaut (Antsirabe en arrière-plan)
     $ville_depart = "Antsirabe";
     $ville_restitution = "Antsirabe";
 
@@ -53,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 4. Calcul de la durée du séjour en jours
     $debut = new DateTime($date_debut);
     $fin = new DateTime($date_fin);
-    
+
     // Vérification chronologique des dates
     if ($fin < $debut) {
         die("Erreur : La date de fin doit être postérieure ou égale à la date de début.");
@@ -64,11 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jours = $interval->days + 1;
 
     // 5. Calcul du montant total de la location
-    // (Nombre de jours × Tarif journalier du véhicule)
+    // (Nombre de jours * Tarif journalier du véhicule)
     $montant_total = $jours * $prix_par_jour;
 
-    // Si l'option chauffeur est cochée, on ajoute 20 000 Ar par jour
-    if ($avec_chauffeur) {
+    // Si un chauffeur a été sélectionné, on ajoute 20 000 Ar par jour
+    if ($driver_id !== null) {
         $montant_total += ($jours * 20000);
     }
 
@@ -79,21 +81,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statut_reservation = "en_attente";
 
     // 6. Insertion sécurisée de la réservation dans la table 'reservations'
-    $sql = "INSERT INTO reservations (user_id, vehicle_id, ville_depart, ville_restitution, date_debut, date_fin, montant_total, montant_acompte, montant_solde, montant_caution, statut_reservation, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-    
+    $sql = "INSERT INTO reservations (user_id, vehicle_id, driver_id, ville_depart, ville_restitution, date_debut, date_fin, montant_total, montant_acompte, montant_solde, montant_caution, statut_reservation) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        $user_id, 
-        $vehicle_id, 
-        $ville_depart, 
-        $ville_restitution, 
-        $date_debut, 
-        $date_fin, 
-        $montant_total, 
-        $montant_acompte, 
-        $montant_solde, 
-        $montant_caution, 
+        $user_id,
+        $vehicle_id,
+        $driver_id,
+        $ville_depart,
+        $ville_restitution,
+        $date_debut,
+        $date_fin,
+        $montant_total,
+        $montant_acompte,
+        $montant_solde,
+        $montant_caution,
         $statut_reservation
     ]);
 

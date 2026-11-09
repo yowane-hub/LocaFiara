@@ -1,7 +1,7 @@
 <?php
 /**
  * Fichier : reservation.php
- * Rôle : Page de réservation avec calcul automatique de la durée et du prix
+ * Rôle : Page de réservation avec calcul automatique de la durée, du prix et sélection d'un chauffeur
  */
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -34,6 +34,10 @@ if (!$vehicle) {
     header("Location: index.php");
     exit();
 }
+
+// Récupération de la liste des chauffeurs disponibles pour la liste déroulante
+$stmt_drivers = $pdo->query("SELECT * FROM drivers WHERE statut = 'disponible' ORDER BY nom ASC");
+$drivers_disponibles = $stmt_drivers->fetchAll(PDO::FETCH_ASSOC);
 
 require_once 'includes/header.php';
 ?>
@@ -87,12 +91,12 @@ require_once 'includes/header.php';
 
                 <div class="form-group">
                     <label for="date_debut">Date de début</label>
-                    <input type="date" name="date_debut" id="date_debut" required class="form-control">
+                    <input type="date" name="date_debut" id="date_debut" required class="form-control" min="<?= date('Y-m-d'); ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="date_fin">Date de fin</label>
-                    <input type="date" name="date_fin" id="date_fin" required class="form-control">
+                    <input type="date" name="date_fin" id="date_fin" required class="form-control" min="<?= date('Y-m-d'); ?>">
                 </div>
 
                 <!-- Affichage de la durée en jours -->
@@ -100,12 +104,20 @@ require_once 'includes/header.php';
                     Durée : Sélectionnez les dates
                 </div>
 
-                <!-- Option Chauffeur -->
-                <div class="checkbox-container" style="margin: 20px 0; display: flex; align-items: center; gap: 10px;">
-                    <input type="checkbox" name="avec_chauffeur" id="avec_chauffeur" style="width: 18px; height: 18px;">
-                    <label for="avec_chauffeur" style="font-weight: 600; font-size: 14px; color: #374151; cursor: pointer;">
-                        Ajouter un chauffeur (+ 20 000 Ar / jour)
+                <!-- Option Chauffeur avec liste déroulante -->
+                <div class="form-group">
+                    <label for="driver_id" style="font-weight: 600; font-size: 14px; color: #374151; display: block; margin-bottom: 8px;">
+                        Option Chauffeur (Optionnel)
                     </label>
+                    <select name="driver_id" id="driver_id" class="form-control">
+                        <option value="">-- Sans chauffeur (Je conduis moi-même) --</option>
+                        <?php foreach ($drivers_disponibles as $drv): ?>
+                            <option value="<?= $drv['id']; ?>">
+                                <?= htmlspecialchars($drv['nom'] . ' ' . $drv['prenom']); ?> (+ 20 000 Ar / jour)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <small style="color: #6b7280; display: block; margin-top: 5px; font-size: 12px;">Le tarif du chauffeur est fixé à 20 000 Ar par jour.</small>
                 </div>
 
                 <!-- Bloc visuel du prix total -->

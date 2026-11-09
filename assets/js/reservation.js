@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const dateDebutInput = document.getElementById('date_debut');
     const dateFinInput = document.getElementById('date_fin');
-    const avecChauffeurCheckbox = document.getElementById('avec_chauffeur');
+    const driverSelect = document.getElementById('driver_id'); // Remplacé par la liste déroulante du chauffeur
     const prixTotalAffichage = document.getElementById('prix_total_affichage');
     const affichageDuree = document.getElementById('affichage_duree');
 
@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Récupération du prix journalier de la voiture
             let prixJourTotal = window.prixVehiculeJour || 0;
 
-            // Ajout de l'option chauffeur si cochée (+20 000 Ar par jour)
-            if (avecChauffeurCheckbox && avecChauffeurCheckbox.checked) {
+            // Ajout de l'option chauffeur si un chauffeur est sélectionné dans la liste (+20 000 Ar par jour)
+            if (driverSelect && driverSelect.value !== "") {
                 prixJourTotal += 20000;
             }
 
@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
         dateFinInput.addEventListener('change', calculerPrix);
     }
     
-    if (avecChauffeurCheckbox) {
-        avecChauffeurCheckbox.addEventListener('change', calculerPrix);
+    // Écoute des changements sur le choix du chauffeur
+    if (driverSelect) {
+        driverSelect.addEventListener('change', calculerPrix);
     }
 });

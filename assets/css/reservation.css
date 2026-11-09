@@ -131,7 +131,9 @@
     margin-bottom: 8px;
 }
 
-.form-control {
+/* Appliqué aux inputs ET aux listes déroulantes (select) du formulaire */
+.form-control,
+.reservation-form select {
     width: 100%;
     padding: 14px 16px;
     border-radius: 12px;
@@ -143,7 +145,8 @@
     box-sizing: border-box;
 }
 
-.form-control:focus {
+.form-control:focus,
+.reservation-form select:focus {
     border-color: #1e3a8a;
     box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
