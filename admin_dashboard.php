@@ -125,7 +125,7 @@ $chiffre_affaires = array_sum(array_column($toutes_reservations, 'montant_total'
                         </p>
 
                         <?php if (!empty($res['driver_nom'])): ?>
-                            <p style="font-size: 13px; color: #1e3a8a; margin-top: 5px;">
+                            <p style="font-size: 13px; color: #6b7280; margin-top: 5px;">
                                 👨‍✈️ Chauffeur assigné : <strong><?= htmlspecialchars($res['driver_nom'] . ' ' . $res['driver_prenom']); ?></strong>
                             </p>
                         <?php else: ?>

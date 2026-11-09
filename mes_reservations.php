@@ -1,80 +1,126 @@
 <?php
 /**
  * Fichier : mes_reservations.php
- * Rôle : Afficher l'historique des réservations de l'utilisateur connecté 
- *        en utilisant son propre fichier de style dédié (mes_reservations.css).
+ * Rôle : Affiche l'historique et le statut des réservations de l'utilisateur connecté,
+ *        avec les détails du véhicule, le chauffeur assigné et la possibilité de laisser un avis.
  */
 
+// Démarrage de la session pour identifier l'utilisateur
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Sécurité : Redirection vers la page de connexion si l'utilisateur n'est pas connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
+// Inclusion du fichier de connexion à la base de données (PDO)
 require_once 'config/db.php';
-require_once 'includes/header.php';
-?>
 
-<!-- Liaison spécifique avec le fichier CSS de mes_reservations -->
-<link rel="stylesheet" href="assets/css/mes_reservation.css">
-
-<?php
 $user_id = $_SESSION['user_id'];
 
-// Récupération des réservations de l'utilisateur avec les informations des véhicules
-$sql = "SELECT r.*, v.marque, v.modele, v.immatriculation 
+// Récupération des réservations de l'utilisateur connecté avec jointure sur les véhicules et les chauffeurs
+$sql = "SELECT r.*, v.marque, v.modele, v.immatriculation, 
+               d.nom AS driver_nom, d.prenom AS driver_prenom 
         FROM reservations r 
         JOIN vehicles v ON r.vehicle_id = v.id 
+        LEFT JOIN drivers d ON r.driver_id = d.id 
         WHERE r.user_id = ? 
         ORDER BY r.created_at DESC";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$user_id]);
-$reservations = $stmt->fetchAll();
+$reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Inclusion de l'en-tête de la page
+require_once 'includes/header.php';
 ?>
 
-<main>
-    <!-- En-tête de la page -->
-    <div class="res-header">
+<!-- Inclusion de la feuille de style externe -->
+<link rel="stylesheet" href="assets/css/mes_reservation.css">
+
+<main class="reservations-main">
+    <div class="reservations-header">
         <h1>Mes Réservations</h1>
         <p>Retrouvez l'historique et le statut de toutes vos locations à Antsirabe.</p>
     </div>
 
     <?php if (empty($reservations)): ?>
-        <!-- Bloc affiché si aucune réservation n'existe -->
-        <div style="background: #ffffff; padding: 40px; border-radius: 16px; text-align: center; border: 1px solid #f3f4f6;">
-            <p style="color: #6b7280; font-size: 16px; margin-bottom: 20px;">Vous n'avez effectué aucune réservation pour le moment.</p>
-            <a href="index.php" class="btn-submit" style="display: inline-block; width: auto; padding: 12px 25px; text-decoration: none;">Louer un véhicule</a>
+        <!-- Message si aucune réservation n'est trouvée -->
+        <div class="empty-reservations">
+            <p>Vous n'avez pas encore effectué de réservation.</p>
+            <a href="index.php" class="btn-primary">Découvrir nos véhicules</a>
         </div>
     <?php else: ?>
-        <!-- Liste des cartes de réservation -->
-        <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="reservations-list">
             <?php foreach ($reservations as $res): ?>
-                <div style="background: #ffffff; border-radius: 16px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div class="reservation-card">
                     
-                    <!-- Informations du véhicule et dates -->
-                    <div>
-                        <h3 style="font-size: 20px; font-weight: 700; color: #111827; margin: 0 0 5px 0;">
+                    <!-- Colonne gauche : Détails du véhicule, dates et chauffeur -->
+                    <div class="reservation-info">
+                        <h3 class="reservation-title">
                             <?= htmlspecialchars($res['marque'] . ' ' . $res['modele']); ?>
                         </h3>
-                        <p style="font-size: 13px; color: #6b7280; margin: 0 0 10px 0;">
+                        <p class="reservation-plate">
                             Immatriculation : <strong><?= htmlspecialchars($res['immatriculation']); ?></strong>
                         </p>
-                        <p style="font-size: 14px; color: #374151; margin: 0; font-weight: 500;">
-                            Du : <strong><?= htmlspecialchars($res['date_debut']); ?></strong> 
-                            Au : <strong><?= htmlspecialchars($res['date_fin']); ?></strong>
+                        <p class="reservation-dates">
+                            Du : <strong><?= htmlspecialchars($res['date_debut']); ?></strong> Au : <strong><?= htmlspecialchars($res['date_fin']); ?></strong>
                         </p>
+
+                        <!-- Affichage du chauffeur assigné -->
+                        <?php if (!empty($res['driver_nom'])): ?>
+                            <div class="driver-badge">
+                                👨‍✈️ Chauffeur : <strong><?= htmlspecialchars($res['driver_nom'] . ' ' . $res['driver_prenom']); ?></strong>
+                            </div>
+                        <?php else: ?>
+                            <div class="no-driver-badge">
+                                🚗 Sans chauffeur
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Formulaire d'avis client (s'affiche uniquement si la réservation est confirmée) -->
+                        <?php if ($res['statut_reservation'] === 'confirmee'): ?>
+                            <div class="review-box">
+                                <form action="traitement_avis.php" method="POST" class="review-form">
+                                    <input type="hidden" name="reservation_id" value="<?= $res['id']; ?>">
+                                    
+                                    <select name="note" required class="review-select">
+                                        <option value="">-- Note --</option>
+                                        <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                                        <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                                        <option value="3">⭐⭐⭐ (3/5)</option>
+                                        <option value="2">⭐⭐ (2/5)</option>
+                                        <option value="1">⭐ (1/5)</option>
+                                    </select>
+
+                                    <input type="text" name="commentaire" placeholder="Votre avis sur cette location..." required class="review-input">
+
+                                    <button type="submit" class="review-btn">
+                                        Envoyer un avis
+                                    </button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
-                    <!-- Statut et montant total -->
-                    <div style="text-align: right;">
-                        <span style="display: inline-block; padding: 6px 12px; font-size: 12px; font-weight: 700; background: #fef3c7; color: #d97706; border-radius: 8px; margin-bottom: 8px; text-transform: uppercase;">
+                    <!-- Colonne droite : Statut et Montant total -->
+                    <div class="reservation-meta">
+                        <?php 
+                            // Attribution de la classe CSS selon le statut
+                            $statut_class = 'status-en_attente';
+                            if ($res['statut_reservation'] === 'confirmee') {
+                                $statut_class = 'status-confirmee';
+                            } elseif ($res['statut_reservation'] === 'annulee') {
+                                $statut_class = 'status-annulee';
+                            }
+                        ?>
+                        <span class="status-badge <?= $statut_class; ?>">
                             <?= htmlspecialchars($res['statut_reservation']); ?>
                         </span>
-                        <div style="font-size: 22px; font-weight: 800; color: #1e3a8a;">
+                        <div class="reservation-price">
                             <?= number_format($res['montant_total'], 0, ',', ' '); ?> Ar
                         </div>
                     </div>
@@ -84,12 +130,12 @@ $reservations = $stmt->fetchAll();
         </div>
     <?php endif; ?>
 
-    <!-- Lien de retour au catalogue -->
-    <div style="margin-top: 30px;">
+    <div class="back-link-container">
         <a href="index.php" class="back-link">← Retour au catalogue des véhicules</a>
     </div>
 </main>
 
 <?php 
+// Inclusion du pied de page
 require_once 'includes/footer.php';
 ?>
