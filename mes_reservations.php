@@ -57,6 +57,8 @@ require_once 'includes/header.php';
         <div class="reservations-list">
             <?php foreach ($reservations as $res): ?>
                 <div class="reservation-card">
+
+                    
                     
                     <!-- Colonne gauche : Détails du véhicule, dates et chauffeur -->
                     <div class="reservation-info">
@@ -83,6 +85,34 @@ require_once 'includes/header.php';
 
                         <!-- Formulaire d'avis client (s'affiche uniquement si la réservation est confirmée) -->
                         <?php if ($res['statut_reservation'] === 'confirmee'): ?>
+                            <!-- Bouton pour accéder au paiement -->
+                            <div class="payment-action-box" style="margin-bottom: 15px;">
+                                <a href="payer.php?reservation_id=<?= $res['id']; ?>" class="btn-pay-link">
+                                    💳 Procéder au paiement
+                                </a>
+                            </div>  
+
+                            <div class="reservation-actions">
+                                <!-- Si la réservation est confirmée et qu'il n'y a pas encore de paiement validé -->
+                                <?php if ($res['statut_reservation'] === 'confirmee'): ?>
+                                    <a href="payer.php?reservation_id=<?= $res['id']; ?>" class="btn-pay-action">Procéder au paiement</a>
+                                <?php endif; ?>
+
+                                <!-- Vérification et affichage du bouton de téléchargement de la facture -->
+                                <?php
+                                $stmt_inv = $pdo->prepare("SELECT id FROM invoices WHERE reservation_id = ?");
+                                $stmt_inv->execute([$res['id']]);
+                                $facture = $stmt_inv->fetch(PDO::FETCH_ASSOC);
+                                ?>
+
+                                <?php if ($facture): ?>
+                                    <a href="telecharger_facture.php?id=<?= $facture['id']; ?>" class="btn-download-invoice" target="_blank">
+                                        📄 Télécharger ma facture (PDF)
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                                        
+
                             <div class="review-box">
                                 <form action="traitement_avis.php" method="POST" class="review-form">
                                     <input type="hidden" name="reservation_id" value="<?= $res['id']; ?>">

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Fichier : admin_dashboard.php
  * Rôle : Tableau de bord administrateur pour la gestion globale des réservations et des accès rapides.
  */
@@ -66,6 +66,9 @@ $chiffre_affaires = array_sum(array_column($toutes_reservations, 'montant_total'
         </a>
         <a href="admin_drivers.php" class="quick-btn driver-btn">
             👨‍✈️ Gérer les Chauffeurs
+        </a>
+        <a href="admin_paiements.php" class="quick-btn www">
+            💳 Gérer les paiements clients
         </a>
     </div>
 

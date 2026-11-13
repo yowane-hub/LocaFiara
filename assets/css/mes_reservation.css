@@ -237,3 +237,20 @@
     color: #1d4ed8;
     text-decoration: underline;
 }
+
+/* Bouton vers la page de paiement dans mes_reservations.php */
+.btn-pay-link {
+    background: #059669;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+}
+
+.btn-pay-link:hover {
+    background-color: #047857;
+}
