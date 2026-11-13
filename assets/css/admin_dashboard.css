@@ -1,7 +1,6 @@
-/*
- * Fichier : admin_dashboard.css
- * Rôle : Styles pour le tableau de bord administrateur (LocaFiara)
- */
+/* ========================================================================
+   Styles pour le tableau de bord administrateur (admin_dashboard.css)
+   ======================================================================== */
 
 .admin-dashboard-main {
     max-width: 1100px;
@@ -27,7 +26,7 @@
     font-size: 14px;
 }
 
-/* Barre de navigation rapide (Véhicules / Chauffeurs) */
+/* Barre de navigation rapide (Véhicules / Chauffeurs / Paiements) */
 .quick-nav-bar {
     display: flex;
     gap: 15px;
@@ -50,7 +49,7 @@
 
 .quick-btn:hover {
     transform: translateY(-2px);
-    opacity: 0.95;
+    opacity: 0.9;
 }
 
 .vehicle-btn {
@@ -63,15 +62,11 @@
     color: white;
 }
 
-.www {
-    background-color: #f59e0b;
-    color:black;
-}
 
 /* Alerte de succès */
 .alert-success-dash {
-    background: #d1fae5;
-    color: #065f46;
+    background: #dcfce7;
+    color: #166534;
     padding: 15px 20px;
     border-radius: 12px;
     margin-bottom: 25px;
@@ -147,7 +142,7 @@
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    background: #eef2ff;
+    background: #eff6ff;
     color: #1e3a8a;
     padding: 4px 10px;
     border-radius: 6px;
@@ -160,21 +155,22 @@
     text-transform: uppercase;
     padding: 4px 10px;
     border-radius: 6px;
+    display: inline-block;
 }
 
 .badge-attente {
     background: #fef3c7;
-    color: #d97706;
+    color: #b45309;
 }
 
 .badge-confirmee {
-    background: #d1fae5;
-    color: #065f46;
+    background: #dcfce7;
+    color: #166534;
 }
 
 .badge-annulee {
     background: #fee2e2;
-    color: #dc2626;
+    color: #991b1b;
 }
 
 .res-car-title {
@@ -219,61 +215,35 @@
 
 .status-select {
     padding: 8px 12px;
-    border: 1px solid #d1d5db;
     border-radius: 8px;
+    border: 1px solid #d1d5db;
     font-size: 13px;
-    background-color: #ffffff;
-    outline: none;
-}
-
-.status-select:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    background: #fff;
 }
 
 .btn-update-status {
-    background: #1e3a8a;
+    background-color: #1e3a8a;
     color: white;
     border: none;
     padding: 8px 14px;
     border-radius: 8px;
-    font-size: 13px;
     font-weight: 600;
+    font-size: 13px;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s;
 }
 
 .btn-update-status:hover {
-    background: #1e40af;
-}
-
-/* Carte vide */
-.empty-card {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #e5e7eb;
-}
-
-.empty-card p {
-    color: #6b7280;
-    font-size: 15px;
-    margin: 0;
-}
-
-/* Lien retour */
-.back-link-container {
-    margin-top: 35px;
+    background-color: #1e40af;
 }
 
 .back-link {
     color: #4b5563;
     text-decoration: none;
+    font-size: 13px;
     font-weight: 600;
-    font-size: 14px;
 }
 
 .back-link:hover {
-    color: #1e3a8a;
+    text-decoration: underline;
 }

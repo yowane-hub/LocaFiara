@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Fichier : admin_dashboard.php
  * Rôle : Tableau de bord administrateur pour la gestion globale des réservations et des accès rapides.
  */
@@ -36,12 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reservation_id'], $_P
 }
 
 // 2. Récupération de toutes les réservations avec les infos clients et véhicules
-$sql = "SELECT r.*, v.marque, v.modele, v.immatriculation, u.nom AS client_nom, u.email AS client_email, 
-               d.nom AS driver_nom, d.prenom AS driver_prenom 
-        FROM reservations r 
-        JOIN vehicles v ON r.vehicle_id = v.id 
-        JOIN users u ON r.user_id = u.id 
-        LEFT JOIN drivers d ON r.driver_id = d.id 
+$sql = "SELECT r.*, v.marque, v.modele, v.immatriculation, u.nom AS client_nom, u.email AS client_email,
+               d.nom AS driver_nom, d.prenom AS driver_prenom
+        FROM reservations r
+        JOIN vehicles v ON r.vehicle_id = v.id
+        JOIN users u ON r.user_id = u.id
+        LEFT JOIN drivers d ON r.driver_id = d.id
         ORDER BY r.created_at DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -59,15 +59,15 @@ $chiffre_affaires = array_sum(array_column($toutes_reservations, 'montant_total'
         <p>Pilotez l'ensemble des activités et suivez les locations en temps réel à Antsirabe.</p>
     </div>
 
-    <!-- Liens d'accès rapide vers les modules de gestion (Véhicules & Chauffeurs) -->
+    <!-- Liens d'accès rapide vers les modules de gestion (Véhicules, Chauffeurs & Paiements) -->
     <div class="quick-nav-bar">
         <a href="admin_vehicule.php" class="quick-btn vehicle-btn">
             🚗 Gérer les Véhicules
         </a>
         <a href="admin_drivers.php" class="quick-btn driver-btn">
-            👨‍✈️ Gérer les Chauffeurs
+            👤 Gérer les Chauffeurs
         </a>
-        <a href="admin_paiements.php" class="quick-btn www">
+        <a href="admin_paiements.php" class="quick-btn payment-btn" style="background-color: #0284c7; color: white;">
             💳 Gérer les paiements clients
         </a>
     </div>
@@ -92,48 +92,46 @@ $chiffre_affaires = array_sum(array_column($toutes_reservations, 'montant_total'
     </div>
 
     <!-- Liste des réservations -->
-    <?php if (empty($toutes_reservations)): ?>
-        <div class="empty-card">
-            <p>Aucune réservation enregistrée pour le moment.</p>
-        </div>
-    <?php else: ?>
-        <div class="reservations-list">
+    <div class="reservations-list">
+        <?php if (empty($toutes_reservations)): ?>
+            <div class="empty-card">
+                <p>Aucune réservation enregistrée pour le moment.</p>
+            </div>
+        <?php else: ?>
             <?php foreach ($toutes_reservations as $res): ?>
-                <?php 
-                // Définition dynamique des couleurs de badge selon le statut
-                $statut = $res['statut_reservation'];
-                $badge_class = 'badge-attente'; // Par défaut (en attente)
-                if ($statut === 'confirmee') { $badge_class = 'badge-confirmee'; }
-                if ($statut === 'annulee') { $badge_class = 'badge-annulee'; }
-                ?>
-
                 <div class="reservation-item">
                     <div class="reservation-info-group">
                         <div class="client-badge-row">
                             <span class="client-tag">
                                 Client : <?= htmlspecialchars($res['client_nom'] ?? $res['client_email']); ?>
                             </span>
-                            <span class="status-badge <?= $badge_class; ?>">
+                            <?php
+                            // Définition dynamique des couleurs de badge selon le statut
+                            $statut = $res['statut_reservation'];
+                            $sbadge_class = 'badge-attente'; // Par défaut (en attente)
+                            if ($statut === 'confirmee') { $sbadge_class = 'badge-confirmee'; }
+                            if ($statut === 'annulee') { $sbadge_class = 'badge-annulee'; }
+                            ?>
+                            <span class="status-badge <?= $sbadge_class; ?>">
                                 <?= htmlspecialchars($statut); ?>
                             </span>
                         </div>
-                        
+
                         <h3 class="res-car-title">
-                            <?= htmlspecialchars($res['marque']); ?> <?= htmlspecialchars($res['modele']); ?>
-                            <span class="res-immat">(<?= htmlspecialchars($res['immatriculation']); ?>)</span>
+                            <?= htmlspecialchars($res['marque']); ?> <span class="res-immat">(<?= htmlspecialchars($res['immatriculation']); ?>)</span>
                         </h3>
                         
                         <p class="res-dates">
-                            Du : <strong><?= htmlspecialchars($res['date_debut']); ?></strong> Au : <strong><?= htmlspecialchars($res['date_fin']); ?></strong>
+                            Du <strong><?= htmlspecialchars($res['date_debut']); ?></strong> Au <strong><?= htmlspecialchars($res['date_fin']); ?></strong>
                         </p>
 
                         <?php if (!empty($res['driver_nom'])): ?>
                             <p style="font-size: 13px; color: #6b7280; margin-top: 5px;">
-                                👨‍✈️ Chauffeur assigné : <strong><?= htmlspecialchars($res['driver_nom'] . ' ' . $res['driver_prenom']); ?></strong>
+                                Chauffeur assigné : <strong><?= htmlspecialchars($res['driver_nom'] . ' ' . $res['driver_prenom']); ?></strong>
                             </p>
                         <?php else: ?>
                             <p style="font-size: 13px; color: #6b7280; margin-top: 5px;">
-                                🚗 Sans chauffeur (Autonome)
+                                Sans chauffeur (Autonome)
                             </p>
                         <?php endif; ?>
                     </div>
@@ -158,10 +156,10 @@ $chiffre_affaires = array_sum(array_column($toutes_reservations, 'montant_total'
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
 
-    <div class="back-link-container">
+    <div class="back-link-container" style="margin-top: 30px;">
         <a href="index.php" class="back-link">← Retour au site principal</a>
     </div>
 </main>
