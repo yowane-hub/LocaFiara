@@ -1,10 +1,10 @@
-/* 
-   Style de gestion des paiements Admin (assets/css/admin_paiements.css)
-   */
+/*
+   Styles pour la gestion des paiements admin (admin_paiements.css)
+*/
 
 .admin-pay-main {
     max-width: 1150px;
-    margin: 40px auto;
+    margin: 48px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -22,8 +22,10 @@
     color: #1e3a8a;
     margin: 0;
     font-size: 24px;
+    font-weight: 800;
 }
 
+/* Bouton Retour */
 .btn-back-admin {
     background-color: #f1f5f9;
     color: #334155;
@@ -40,8 +42,9 @@
     background-color: #e2e8f0;
 }
 
+/* Bannière d'alerte / notification */
 .alert-banner {
-    background-color: #ecfdf5;
+    background: #ecfdf5;
     border: 1px solid #10b981;
     color: #065f46;
     padding: 14px 18px;
@@ -51,10 +54,11 @@
     font-size: 14px;
 }
 
+/* Tableau responsive */
 .table-responsive {
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     border: 1px solid #e2e8f0;
     overflow-x: auto;
 }
@@ -73,6 +77,8 @@
     padding: 14px 16px;
     border-bottom: 2px solid #e2e8f0;
     font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .pay-table td {
@@ -90,10 +96,12 @@
     text-align: center;
     padding: 30px !important;
     color: #64748b;
+    font-style: italic;
 }
 
+/* Badges Opérateurs Mobile Money */
 .badge-op {
-    background-color: #eff6ff;
+    background: #eff6ff;
     color: #1d4ed8;
     padding: 4px 8px;
     border-radius: 6px;
@@ -101,8 +109,9 @@
     font-weight: 700;
 }
 
+/* Badges Type de Paiement */
 .badge-type-half {
-    background-color: #fef3c7;
+    background: #fef3c7;
     color: #b45309;
     padding: 4px 8px;
     border-radius: 6px;
@@ -111,16 +120,17 @@
 }
 
 .badge-type-full {
-    background-color: #e0e7ff;
-    color: #3730a3;
+    background: #dcfce7;
+    color: #166534;
     padding: 4px 8px;
     border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
 }
 
+/* Référence de transaction */
 .ref-code {
-    background-color: #f1f5f9;
+    background: #f1f5f9;
     padding: 4px 8px;
     border-radius: 5px;
     font-family: monospace;
@@ -129,6 +139,7 @@
     border: 1px solid #cbd5e1;
 }
 
+/* Badges de Statut Paiement */
 .status-badge {
     padding: 5px 10px;
     border-radius: 20px;
@@ -152,9 +163,11 @@
     color: #991b1b;
 }
 
+/* Formulaires d'actions (Valider / Refuser) */
 .action-inline-form {
     display: flex;
     gap: 8px;
+    align-items: center;
 }
 
 .btn-validate {

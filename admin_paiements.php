@@ -1,21 +1,24 @@
 <?php
+ini_set('pcre.jit', '0'); // Désactive l'erreur JIT pour PHPMailer graphiquement
+
 /**
  * Fichier : admin_paiements.php
  * Rôle : Tableau de bord admin pour vérifier les références Mobile Money, valider les paiements,
- *        générer la facture et notifier le client par e-mail.
+ *        générer la facture et notifier le client par e-mail via PHPMailer.
  */
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Vérification des droits administrateur (adapte selon le nom de ta variable de session admin)
-if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+// Vérification des droits administrateur
+if (!isset($_SESSION['user_id']) || ($_SESSION['rôle'] ?? $_SESSION['role'] ?? '') !== 'admin') {
     header("Location: login.php");
     exit();
 }
 
 require_once 'config/db.php';
+require_once 'config/mail.php'; // Inclusion de PHPMailer
 
 $message = '';
 
@@ -28,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['pay
         try {
             // Récupérer les infos complètes du paiement, de la réservation et du client
             $stmt_info = $pdo->prepare("
-                SELECT p.*, r.id AS res_id, r.date_debut, u.nom, u.prenom, u.email, v.marque, v.modele 
+                SELECT p.*, r.id AS res_id, r.date_debut, u.nom, u.prenom, u.email, v.marque, v.modele
                 FROM payments p
                 JOIN reservations r ON p.reservation_id = r.id
                 JOIN users u ON r.user_id = u.id
@@ -47,28 +50,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['pay
                     // 2. Générer la facture officielle dans 'invoices'
                     $numero_facture = 'FACT-' . date('Y') . '-' . str_pad($pay['res_id'], 4, '0', STR_PAD_LEFT);
                     $stmt_inv = $pdo->prepare("
-                        INSERT INTO invoices (reservation_id, numero_facture, montant_ttc) 
-                        VALUES (?, ?, ?) 
+                        INSERT INTO invoices (reservation_id, numero_facture, montant_ttc)
+                        VALUES (?, ?, ?)
                         ON DUPLICATE KEY UPDATE montant_ttc = VALUES(montant_ttc)
                     ");
                     $stmt_inv->execute([$pay['res_id'], $numero_facture, $pay['montant']]);
 
-                    // 3. Envoyer l'e-mail de confirmation au client
+                    // 3. Envoyer l'e-mail de confirmation au client via PHPMailer
                     $to = $pay['email'];
+                    $nomClient = $pay['prenom'] . ' ' . $pay['nom'];
                     $type_texte = ($pay['type_paiement'] === 'acompte_50') ? "votre acompte de 50%" : "la totalité de votre location";
                     $subject = "LocaFiara - Confirmation de votre paiement ($numero_facture)";
-                    
-                    $body = "Bonjour " . $pay['prenom'] . " " . $pay['nom'] . ",\n\n"
-                          . "Nous avons bien vérifié et validé " . $type_texte . " d'un montant de " . number_format($pay['montant'], 0, ',', ' ') . " Ar "
-                          . "(Référence : " . $pay['reference_transaction'] . ") pour la location du véhicule " . $pay['marque'] . " " . $pay['modele'] . ".\n\n"
-                          . "Votre facture n° " . $numero_facture . " est désormais disponible dans votre espace client.\n"
-                          . "Veuillez patienter jusqu'à l'heure prévue de remise des clés à notre agence (le " . date('d/m/Y', strtotime($pay['date_debut'])) . ").\n\n"
-                          . "Merci de votre confiance,\nL'équipe LocaFiara.";
-                    
-                    $headers = "From: no-reply@locafiara.mg\r\nContent-Type: text/plain; charset=UTF-8\r\n";
-                    @mail($to, $subject, $body, $headers);
 
-                    $message = "Paiement validé avec succès, facture générée et e-mail envoyé à " . htmlspecialchars($pay['email']) . ".";
+                    $body = "Bonjour <strong>" . htmlspecialchars($nomClient) . "</strong>,<br><br>"
+                          . "Nous avons bien vérifié et validé " . $type_texte . " d'un montant de <strong>" . number_format($pay['montant'], 0, ',', ' ') . " Ar</strong> "
+                          . "(Référence : <code>" . htmlspecialchars($pay['reference_transaction']) . "</code>) pour la location du véhicule <strong>" . htmlspecialchars($pay['marque'] . ' ' . $pay['modele']) . "</strong>.<br><br>"
+                          . "Votre facture n° <strong>" . htmlspecialchars($numero_facture) . "</strong> est désormais disponible en téléchargement PDF dans votre espace client.<br>"
+                          . "Veuillez vous présenter à notre agence d'Antsirabe à la date prévue (" . date('d/m/Y', strtotime($pay['date_debut'])) . ").<br><br>"
+                          . "Merci de votre confiance,<br><strong>L'équipe LocaFiara</strong>";
+
+                    $envoi_ok = envoyerMailLocaFiara($to, $nomClient, $subject, $body);
+
+                    if ($envoi_ok) {
+                        $message = "Paiement validé avec succès, facture générée et e-mail envoyé à " . htmlspecialchars($pay['email']) . ".";
+                    } else {
+                        $message = "Paiement validé et facture générée, mais l'envoi de l'e-mail a échoué (vérifiez config/mail.php).";
+                    }
                 } else {
                     $message = "Le paiement a été marqué comme refusé.";
                 }
@@ -81,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['pay
 
 // Récupérer tous les paiements (les plus récents / en attente en premier)
 $sql_list = "
-    SELECT p.*, r.id AS res_id, u.nom, u.prenom, u.email, v.marque, v.modele 
+    SELECT p.*, r.id AS res_id, u.nom, u.prenom, u.email, v.marque, v.modele
     FROM payments p
     JOIN reservations r ON p.reservation_id = r.id
     JOIN users u ON r.user_id = u.id
@@ -97,12 +104,12 @@ require_once 'includes/header.php';
 
 <main class="admin-pay-main">
     <div class="admin-pay-header">
-        <h2>💳 Gestion et Validation des Paiements Clients</h2>
+        <h2>Gestion et Validation des Paiements Clients</h2>
         <a href="admin_dashboard.php" class="btn-back-admin">← Retour au tableau de bord</a>
     </div>
 
     <?php if (!empty($message)): ?>
-        <div class="alert-banner"><?= $message; ?></div>
+        <div class="alert-banner"><?= htmlspecialchars($message); ?></div>
     <?php endif; ?>
 
     <div class="table-responsive">
@@ -140,18 +147,18 @@ require_once 'includes/header.php';
                             <td><code class="ref-code"><?= htmlspecialchars($p['reference_transaction']); ?></code></td>
                             <td>
                                 <?php if ($p['statut_paiement'] === 'en_attente'): ?>
-                                    <span class="status-badge pending">⏳ En attente</span>
+                                    <span class="status-badge pending">En attente</span>
                                 <?php elseif ($p['statut_paiement'] === 'valide'): ?>
-                                    <span class="status-badge valid">✅ Validé</span>
+                                    <span class="status-badge valid">Validé</span>
                                 <?php else: ?>
-                                    <span class="status-badge refused">❌ Refusé</span>
+                                    <span class="status-badge refused">Refusé</span>
                                 <?php endif; ?>
                             </td>
                             <td>
                                 <?php if ($p['statut_paiement'] === 'en_attente'): ?>
                                     <form method="POST" class="action-inline-form">
                                         <input type="hidden" name="payment_id" value="<?= $p['id']; ?>">
-                                        <button type="submit" name="action" value="valide" class="btn-validate" onclick="return confirm('Confirmez-vous la réception de ce montant sur votre compte marchand ?');">
+                                        <button type="submit" name="action" value="valide" class="btn-validate" onclick="return confirm('Confirmez-vous la validation de ce paiement ?');">
                                             Valider
                                         </button>
                                         <button type="submit" name="action" value="refuse" class="btn-reject" onclick="return confirm('Refuser cette référence de paiement ?');">
