@@ -27,7 +27,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <nav class="site-nav">
         <a href="index.php">Accueil</a>
-        <a href="index.php#vehicules">Nos Véhicules</a>
+        <a href="vehicules.php">Nos Véhicules</a>
 
         <?php if (isset($_SESSION['user_id'])): ?>
             <!-- Liens si l'utilisateur est connecté -->

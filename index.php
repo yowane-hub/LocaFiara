@@ -1,93 +1,53 @@
 <?php
-/*
+/**
  * Fichier : index.php
- * Rôle : Page d'accueil et catalogue public avec filtrage par catégorie
+ * Rôle : Page d'accueil moderne avec texte à gauche et voiture dynamique 360° à droite.
  */
 
-require_once 'config/db.php';
-require_once 'includes/header.php';
-
-// 1. Récupération de la catégorie filtrée via l'URL (ex: index.php?cat=1)
-$selected_cat = isset($_GET['cat']) ? intval($_GET['cat']) : 0;
-
-// 2. Récupération de toutes les catégories pour afficher les boutons de filtre
-$stmt_categories = $pdo->query("SELECT * FROM categories ORDER BY id ASC");
-$all_categories = $stmt_categories->fetchAll(PDO::FETCH_ASSOC);
-
-// 3. Construction de la requête SQL de filtrage des véhicules disponibles
-if ($selected_cat > 0) {
-    $stmt_vehicles = $pdo->prepare("SELECT v.*, c.nom AS categorie_nom 
-                                     FROM vehicles v 
-                                     LEFT JOIN categories c ON v.category_id = c.id 
-                                     WHERE v.statut = 'disponible' AND v.category_id = :cat_id
-                                     ORDER BY v.id DESC");
-    $stmt_vehicles->execute([':cat_id' => $selected_cat]);
-} else {
-    $stmt_vehicles = $pdo->query("SELECT v.*, c.nom AS categorie_nom 
-                                  FROM vehicles v 
-                                  LEFT JOIN categories c ON v.category_id = c.id 
-                                  WHERE v.statut = 'disponible'
-                                  ORDER BY v.id DESC");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
-$vehicules = $stmt_vehicles->fetchAll(PDO::FETCH_ASSOC);
+
+require_once 'includes/header.php';
 ?>
- 
+
 <link rel="stylesheet" href="assets/css/index.css">
 
 <main class="home-main">
-    <!-- En-tête de la page -->
-    <div class="home-header">
-        <h1>Louez votre véhicule à Madagascar</h1>
-        <p>Choisissez parmi notre flotte de voitures, motos et camions en toute sérénité.</p>
-    </div>
-
-    <!-- Barre de filtrage par catégorie -->
-    <div class="filter-container">
-        <a href="index.php" class="filter-btn <?= ($selected_cat === 0) ? 'active' : ''; ?>">
-            Tous
-        </a>
-        <?php foreach ($all_categories as $cat): ?>
-            <a href="index.php?cat=<?= $cat['id']; ?>" class="filter-btn <?= ($selected_cat === $cat['id']) ? 'active' : ''; ?>">
-                <?= htmlspecialchars($cat['nom']); ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
-
-    <!-- Grille des véhicules disponibles -->
-    <div class="vehicles-grid">
-        <?php if (empty($vehicules)): ?>
-            <p style="grid-column: 1 / -1; text-align: center; color: #6b7280; padding: 40px 0;">
-                Aucun véhicule disponible dans cette catégorie pour le moment.
+    <section class="hero-section">
+        <!-- Partie Gauche : Texte publicitaire et CTA -->
+        <div class="hero-content">
+            <span class="badge-promo">🚀 Expérience Premium à Madagascar</span>
+            <h1>Louez le véhicule de vos rêves avec <span>LocaFiara</span></h1>
+            <p>
+                Découvrez notre flotte exclusive de voitures citadines, SUV, motos et camions. 
+                Profitez d'une réservation simple, rapide et sécurisée par Mobile Money pour tous vos déplacements à Antsirabe et partout sur l'île.
             </p>
-        <?php else: ?>
-            <?php foreach ($vehicules as $car): ?>
-                <div class="car-card">
-                    <!-- Vignette image propre -->
-                    <div class="car-thumb">
-                        <?php if (!empty($car['image'])): ?>
-                            <img src="data:image/jpeg;base64,<?= base64_encode($car['image']); ?>" alt="Photo du véhicule">
-                        <?php else: ?>
-                            <div class="no-image">Pas d'image</div>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <span class="car-badge"><?= htmlspecialchars($car['categorie_nom'] ?? 'Général'); ?></span>
-                    
-                    <h3 class="car-title"><?= htmlspecialchars($car['marque'] . ' ' . $car['modele']); ?></h3>
-                    <p class="car-plate">Immatriculation : <strong><?= htmlspecialchars($car['immatriculation']); ?></strong></p>
+            <div class="hero-features">
+                <div class="feature-item">✔ Réservation instantanée & sécurisée</div>
+                <div class="feature-item">✔ Véhicules récents et entièrement révisés</div>
+                <div class="feature-item">✔ Support client disponible 7j/7</div>
+            </div>
+            <div class="hero-buttons">
+                <a href="vehicules.php" class="btn-primary">Découvrir nos véhicules</a>
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    <a href="register.php" class="btn-secondary">Créer un compte</a>
+                <?php endif; ?>
+            </div>
+        </div>
 
-                    <div class="car-footer">
-                        <div>
-                            <span class="price-value"><?= number_format($car['prix_par_jour'], 0, ',', ' '); ?> Ar</span> / jour
-                        </div>
-                        <a href="reservation.php?id=<?= $car['id']; ?>" class="btn-reserve">
-                            Réserver
-                        </a>
-                    </div>
+        <!-- Partie Droite : Voiture dynamique avec effet visuel 360° -->
+        <div class="hero-visual">
+            <div class="car-360-wrapper">
+                <div class="glow-effect"></div>
+                <!-- Image de la voiture de luxe -->
+                <img src="assets/image/IMG_5855.WEBP" alt="Voiture dynamique LocaFiara" class="car-dynamic-img">
+                <div class="badge-360">
+                    <span class="pulse-dot"></span> Vue Dynamique & Prestige
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <?php require_once 'includes/footer.php'; ?>
