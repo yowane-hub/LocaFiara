@@ -26,7 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <a href="admin_dashboard.php">
                     🚗 Loca <span style="color: #facc15;">Fiara</span> 
                     <span class="badge-admin">Admin</span>
-                </a>
+                </a>   
             </div>
 
             <!-- Menu de navigation de gestion -->
@@ -39,7 +39,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 
                 <!-- Bouton de déconnexion -->
                 <a href="logout.php" class="admin-btn-logout" style="background-color: #ef4444; color: #ffffff; padding: 10px 20px; border-radius: 12px; font-weight: 700; text-decoration: none;">Déconnexion</a>
+                <!-- Bouton Dark Mode -->
+                <button id="theme-toggle" class="theme-toggle-btn" title="Changer de thème">
+                    🌙
+                </button>
             </nav>
 
         </div>
+        <script src="assets/js/theme.js"></script>
+
     </header>

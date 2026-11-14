@@ -43,11 +43,11 @@ $vehicules = $stmt_vehicles->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Barre de filtrage par catégorie -->
     <div class="filter-container">
-        <a href="index.php" class="filter-btn <?= ($selected_cat === 0) ? 'active' : ''; ?>">
+        <a href="vehicules.php" class="filter-btn <?= ($selected_cat === 0) ? 'active' : ''; ?>">
             Tous
         </a>
         <?php foreach ($all_categories as $cat): ?>
-            <a href="index.php?cat=<?= $cat['id']; ?>" class="filter-btn <?= ($selected_cat === $cat['id']) ? 'active' : ''; ?>">
+            <a href="vehicules.php?cat=<?= $cat['id']; ?>" class="filter-btn <?= ($selected_cat === $cat['id']) ? 'active' : ''; ?>">
                 <?= htmlspecialchars($cat['nom']); ?>
             </a>
         <?php endforeach; ?>

@@ -51,5 +51,12 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="login.php">Connexion</a>
             <a href="register.php" class="btn-inscription">Inscription</a>
         <?php endif; ?>
+
+        <!-- Bouton Dark Mode -->
+        <button id="theme-toggle" class="theme-toggle-btn" title="Changer de thème">
+            🌙
+        </button>
     </nav>
+
+    <script src="assets/js/theme.js"></script>
 </header>

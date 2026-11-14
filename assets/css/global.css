@@ -24,3 +24,114 @@ main {
     margin: 0 auto;
     padding: 40px 30px;
 }
+/* Rendre le header fixe et flottant en haut de l'écran */
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Garantit que le header reste au-dessus de tout le contenu */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ajoute une légère ombre élégante en scrollant */
+}
+
+/* ==========================================================================
+   SYSTÈME DE THÈME CLAIR / SOMBRE (LocaFiara)
+   ========================================================================== */
+
+/* 1. Couleurs par défaut (Mode Clair) */
+:root {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --border-color: #e2e8f0;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+/* 2. Couleurs pour le Mode Sombre (Dark Mode) */
+[data-theme="dark"] {
+    --bg-main: #0b1329;        /* Fond général sombre et profond */
+    --bg-card: #151f38;        /* Fond des cartes (bleu nuit) */
+    --text-main: #f8fafc;      /* Texte principal blanc éclatant */
+    --text-muted: #cbd5e1;     /* Texte secondaire plus clair pour une meilleure lecture */
+    --border-color: #27354f;   /* Bordures discrètes */
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Application globale du fond et de la couleur de texte */
+body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-main) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================================================
+   3. ADAPTATION FORCÉE DES CARTES ET CONTENEURS EN MODE SOMBRE
+   ========================================================================== */
+[data-theme="dark"] .auth-container,
+[data-theme="dark"] .hero-section,
+[data-theme="dark"] .car-card,
+[data-theme="dark"] .pay-table,
+[data-theme="dark"] .home-main section,
+[data-theme="dark"] div[style*="background: white"],
+[data-theme="dark"] .admin-dashboard-main,
+[data-theme="dark"] tr, 
+[data-theme="dark"] th, 
+[data-theme="dark"] td {
+    background-color: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+/* ==========================================================================
+   4. CORRECTION DE LA VISIBILITÉ DES TEXTES EN MODE SOMBRE
+   ========================================================================== */
+/* Forcer TOUS les titres et textes importants à être bien blancs en mode sombre */
+[data-theme="dark"] h1, 
+[data-theme="dark"] h2, 
+[data-theme="dark"] h3, 
+[data-theme="dark"] h4, 
+[data-theme="dark"] h5,
+[data-theme="dark"] strong,
+[data-theme="dark"] label,
+[data-theme="dark"] .auth-container h2,
+[data-theme="dark"] .auth-container h3 {
+    color: #ffffff !important;
+}
+
+/* Forcer les paragraphes, descriptions et éléments de liste à être bien lisibles */
+[data-theme="dark"] p, 
+[data-theme="dark"] span:not(.badge-promo), 
+[data-theme="dark"] li,
+[data-theme="dark"] .hero-features,
+[data-theme="dark"] .feature-item,
+[data-theme="dark"] small {
+    color: var(--text-muted) !important;
+}
+
+/* ==========================================================================
+   5. STYLE DU BOUTON DE BASCULE DANS LE HEADER
+   ========================================================================== */
+.theme-toggle-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
