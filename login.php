@@ -15,16 +15,16 @@ $message_erreur = "";
 // 3. Vérification si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    $email = trim($_POST['email'] ?? '');
+    $prenom = trim($_POST['prenom'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    if (empty($email) || empty($password)) {
+    if (empty($prenom) || empty($password)) {
         $message_erreur = "Tous les champs sont obligatoires.";
     } else {
         // Recherche de l'utilisateur dans la base de données
-        $sql = "SELECT * FROM users WHERE email = ?";
+        $sql = "SELECT * FROM users WHERE prenom = ?";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$email]);
+        $stmt->execute([$prenom]);
         $user = $stmt->fetch();
 
         // Vérification de l'existence de l'utilisateur et du mot de passe
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
 
         } else {
-            $message_erreur = "Email ou mot de passe incorrect.";
+            $message_erreur = "Prenom ou mot de passe incorrect.";
         }
     }
 }
@@ -72,8 +72,8 @@ require_once 'includes/header.php';
         <!-- Formulaire de connexion -->
         <form action="login.php" method="POST">
             <div class="form-group">
-                <label for="email">Adresse email</label>
-                <input type="email" name="email" id="email" required class="form-control" placeholder="nom@exemple.com">
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" name="prenom" required placeholder="Entrez votre prénom" class="form-control" value="<?= htmlspecialchars($_POST['prenom'] ?? ''); ?>">
             </div>
 
             <div class="form-group">
