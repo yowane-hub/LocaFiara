@@ -10,7 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once 'includes/header.php';
 ?>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/css/index.css">
 
 <main class="home-main">

@@ -1,22 +1,23 @@
+
 /*
  * Fichier : admin_vehicule.css
  * Rôle : Styles pour la page d'administration des véhicules
  */
-
+ 
 .admin-main {
     max-width: 1100px;
     margin: 48px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
+ 
 .admin-main h1 {
     color: #1e3a8a;
     font-size: 26px;
     font-weight: 800;
     margin-bottom: 5px;
 }
-
+ 
 .admin-main .back-link {
     display: inline-block;
     margin-bottom: 25px;
@@ -24,11 +25,11 @@
     text-decoration: none;
     font-weight: 600;
 }
-
+ 
 .admin-main .back-link:hover {
     color: #1e3a8a;
 }
-
+ 
 /* Messages d'alerte */
 .alert-success {
     background: #d1fae5;
@@ -38,7 +39,7 @@
     margin-bottom: 20px;
     font-weight: 600;
 }
-
+ 
 .alert-error {
     background: #fee2e2;
     color: #dc2626;
@@ -47,7 +48,7 @@
     margin-bottom: 20px;
     font-weight: 600;
 }
-
+ 
 /* Carte du formulaire d'ajout / modification */
 .form-card {
     background: #ffffff;
@@ -57,17 +58,17 @@
     margin-bottom: 35px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
-
+ 
 .form-card h3 {
     color: #1e3a8a;
     margin-bottom: 20px;
     font-size: 18px;
 }
-
+ 
 .form-group-admin {
     margin-bottom: 15px;
 }
-
+ 
 .form-group-admin label {
     display: block;
     font-weight: 700;
@@ -76,7 +77,7 @@
     margin-bottom: 6px;
     text-transform: uppercase;
 }
-
+ 
 .form-group-admin input,
 .form-group-admin select {
     width: 100%;
@@ -87,14 +88,14 @@
     box-sizing: border-box;
     background-color: #ffffff;
 }
-
+ 
 .form-group-admin input:focus,
 .form-group-admin select:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-
+ 
 .btn-submit {
     background: #1e3a8a;
     color: white;
@@ -107,11 +108,11 @@
     font-size: 15px;
     transition: background 0.2s;
 }
-
+ 
 .btn-submit:hover {
     background: #1e40af;
 }
-
+ 
 /* Grille d'affichage des véhicules */
 .section-title {
     color: #1e3a8a;
@@ -119,13 +120,13 @@
     font-weight: 700;
     margin-bottom: 20px;
 }
-
+ 
 .vehicles-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
 }
-
+ 
 .vehicule-card {
     background: white;
     border: 1px solid #e5e7eb;
@@ -136,7 +137,7 @@
     flex-direction: column;
     justify-content: space-between;
 }
-
+ 
 /* Vignette image propre */
 .car-thumb {
     width: 100%;
@@ -146,13 +147,13 @@
     margin-bottom: 15px;
     background-color: #f3f4f6;
 }
-
+ 
 .car-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
+ 
 .car-thumb .no-image {
     width: 100%;
     height: 100%;
@@ -163,7 +164,7 @@
     font-style: italic;
     font-size: 14px;
 }
-
+ 
 /* Badge de catégorie */
 .car-badge {
     background-color: #3b82f6;
@@ -177,20 +178,20 @@
     width: fit-content;
     text-transform: uppercase;
 }
-
+ 
 .vehicule-card h4 {
     color: #1e3a8a;
     margin: 0 0 8px 0;
     font-size: 18px;
     font-weight: 700;
 }
-
+ 
 .vehicule-info {
     margin: 4px 0;
     font-size: 14px;
     color: #4b5563;
 }
-
+ 
 .vehicule-price {
     font-weight: bold;
     color: #1e3a8a;
@@ -198,7 +199,7 @@
     margin-bottom: 15px;
     font-size: 16px;
 }
-
+ 
 /* Boutons d'action sur les cartes véhicules */
 .vehicule-actions {
     padding-top: 15px;
@@ -206,7 +207,7 @@
     gap: 12px;
     border-top: 1px solid #f3f4f6;
 }
-
+ 
 .btn-edit {
     flex: 1;
     text-align: center;
@@ -219,11 +220,11 @@
     font-weight: 600;
     transition: background-color 0.2s ease;
 }
-
+ 
 .btn-edit:hover {
     background-color: #2563eb;
 }
-
+ 
 .btn-delete {
     flex: 1;
     text-align: center;
@@ -236,7 +237,26 @@
     font-weight: 600;
     transition: background-color 0.2s ease;
 }
-
+ 
 .btn-delete:hover {
     background-color: #dc2626;
 }
+ 
+/* ==========================================================================
+   RESPONSIVE (admin_vehicule.css)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .admin-main { margin: 25px auto; padding: 0 15px; }
+    .admin-main h1 { font-size: 22px; }
+    .form-card { padding: 20px; }
+    .vehicles-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+}
+@media (max-width: 480px) {
+    .vehicles-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 16px; }
+    .form-group-admin input, .form-group-admin select { font-size: 16px; }
+    .section-title { font-size: 19px; }
+    .car-thumb { height: 160px; }
+    .vehicule-actions { flex-wrap: wrap; }
+}
+ 

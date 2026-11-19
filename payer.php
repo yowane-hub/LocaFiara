@@ -41,7 +41,7 @@ $montant_acompte = $montant_total * 0.5;
 
 require_once 'includes/header.php';
 ?>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/css/payer.css">
 
 <main class="payment-main">

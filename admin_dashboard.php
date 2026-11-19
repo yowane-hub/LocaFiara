@@ -17,6 +17,7 @@ require_once 'config/db.php';
 require_once 'includes/admin_header.php';
 ?>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Lien vers la feuille de style dédiée -->
 <link rel="stylesheet" href="assets/css/admin_dashboard.css">
 

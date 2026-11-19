@@ -99,7 +99,7 @@ $paiements = $pdo->query($sql_list)->fetchAll(PDO::FETCH_ASSOC);
 
 require_once 'includes/header.php';
 ?>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/css/admin_paiements.css">
 
 <main class="admin-pay-main">

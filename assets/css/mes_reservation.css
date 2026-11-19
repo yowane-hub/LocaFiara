@@ -1,31 +1,32 @@
+
 /* ========================================================================
    Style de la page "Mes Réservations" (assets/css/mes_reservations.css)
    ======================================================================== */
-
+ 
 .reservations-main {
     max-width: 1000px;
     margin: 40px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
+ 
 .reservations-header {
     margin-bottom: 30px;
 }
-
+ 
 .reservations-header h1 {
     color: #1e3a8a;
     margin: 0 0 8px 0;
     font-size: 26px;
     font-weight: 800;
 }
-
+ 
 .reservations-header p {
     color: #64748b;
     font-size: 14px;
     margin: 0;
 }
-
+ 
 /* Aucun résultat */
 .empty-reservations {
     background: #ffffff;
@@ -35,20 +36,20 @@
     border: 1px solid #e2e8f0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
-
+ 
 .empty-reservations p {
     color: #475569;
     font-size: 15px;
     margin-bottom: 20px;
 }
-
+ 
 /* Liste des réservations */
 .reservations-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-
+ 
 .reservation-card {
     background: #ffffff;
     border-radius: 14px;
@@ -61,32 +62,32 @@
     gap: 20px;
     flex-wrap: wrap;
 }
-
+ 
 /* Colonne de gauche : Infos & Actions */
 .reservation-info {
     flex: 1;
     min-width: 280px;
 }
-
+ 
 .reservation-title {
     color: #1e293b;
     font-size: 18px;
     font-weight: 700;
     margin: 0 0 6px 0;
 }
-
+ 
 .reservation-plate {
     font-size: 13px;
     color: #64748b;
     margin: 0 0 6px 0;
 }
-
+ 
 .reservation-dates {
     font-size: 14px;
     color: #334155;
     margin: 0 0 12px 0;
 }
-
+ 
 /* Badges Chauffeur */
 .driver-badge {
     background-color: #f0fdf4;
@@ -98,7 +99,7 @@
     display: inline-block;
     margin-bottom: 15px;
 }
-
+ 
 .no-driver-badge {
     background-color: #f8fafc;
     color: #64748b;
@@ -109,7 +110,7 @@
     display: inline-block;
     margin-bottom: 15px;
 }
-
+ 
 /* Conteneur des boutons d'action (Paiement et Facture PDF) */
 .reservation-actions-container {
     display: flex;
@@ -118,7 +119,7 @@
     flex-wrap: wrap;
     margin: 15px 0;
 }
-
+ 
 /* Bouton vert de paiement */
 .btn-pay-action {
     display: inline-block;
@@ -132,11 +133,11 @@
     transition: background-color 0.2s ease;
     box-shadow: 0 2px 5px rgba(5, 150, 105, 0.2);
 }
-
+ 
 .btn-pay-action:hover {
     background-color: #047857;
 }
-
+ 
 /* Bouton de téléchargement de la facture PDF */
 .btn-download-invoice {
     display: inline-block;
@@ -150,11 +151,11 @@
     transition: background-color 0.2s ease;
     box-shadow: 0 2px 5px rgba(2, 132, 199, 0.2);
 }
-
+ 
 .btn-download-invoice:hover {
     background-color: #0369a1;
 }
-
+ 
 /* Section Avis client */
 .review-box {
     margin-top: 15px;
@@ -163,14 +164,14 @@
     padding: 15px;
     border-radius: 10px;
 }
-
+ 
 .review-form {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     align-items: center;
 }
-
+ 
 .review-select, .review-input {
     padding: 8px 12px;
     border-radius: 6px;
@@ -179,12 +180,12 @@
     outline: none;
     background-color: #ffffff;
 }
-
+ 
 .review-input {
     flex: 1;
     min-width: 180px;
 }
-
+ 
 .review-btn {
     background-color: #1e3a8a;
     color: white;
@@ -196,11 +197,11 @@
     cursor: pointer;
     transition: background 0.2s;
 }
-
+ 
 .review-btn:hover {
     background-color: #172554;
 }
-
+ 
 /* Colonne de droite : Statut et Prix */
 .reservation-meta {
     text-align: right;
@@ -209,7 +210,7 @@
     align-items: flex-end;
     gap: 12px;
 }
-
+ 
 .status-badge {
     font-size: 11px;
     font-weight: 700;
@@ -218,32 +219,32 @@
     border-radius: 20px;
     display: inline-block;
 }
-
+ 
 .status-en_attente {
     background-color: #fef9c3;
     color: #854d0e;
 }
-
+ 
 .status-confirmee {
     background-color: #dcfce7;
     color: #166534;
 }
-
+ 
 .status-annulee {
     background-color: #fee2e2;
     color: #991b1b;
 }
-
+ 
 .reservation-price {
     font-size: 20px;
     font-weight: 800;
     color: #1e3a8a;
 }
-
+ 
 .back-link-container {
     margin-top: 30px;
 }
-
+ 
 .back-link {
     color: #64748b;
     text-decoration: none;
@@ -251,8 +252,35 @@
     font-weight: 600;
     transition: color 0.2s;
 }
-
+ 
 .back-link:hover {
     color: #1e3a8a;
     text-decoration: underline;
 }
+ 
+/* ==========================================================================
+   RESPONSIVE (mes_reservation.css)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .reservations-main { margin: 25px auto; padding: 0 15px; }
+    .reservations-header h1 { font-size: 22px; }
+    .reservation-card { padding: 20px; }
+    .reservation-meta {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+}
+@media (max-width: 480px) {
+    .reservation-info { min-width: 0; width: 100%; }
+    .reservation-card { padding: 16px; border-radius: 12px; }
+    .reservation-actions-container { flex-direction: column; align-items: stretch; }
+    .btn-pay-action, .btn-download-invoice { text-align: center; }
+    .review-form { flex-direction: column; align-items: stretch; }
+    .review-select, .review-input, .review-btn { width: 100%; min-width: 0; font-size: 14px; }
+    .reservation-price { font-size: 18px; }
+    .empty-reservations { padding: 25px 15px; }
+}
+ 

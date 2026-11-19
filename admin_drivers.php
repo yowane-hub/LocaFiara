@@ -87,6 +87,7 @@ $drivers = $stmt_drv->fetchAll(PDO::FETCH_ASSOC);
 include 'includes/admin_header.php';
 ?>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/css/admin_drivers.css">
 
 <main class="admin-main">

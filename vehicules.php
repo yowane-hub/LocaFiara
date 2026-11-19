@@ -31,7 +31,7 @@ if ($selected_cat > 0) {
 }
 $vehicules = $stmt_vehicles->fetchAll(PDO::FETCH_ASSOC);
 ?>
- 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/css/vehicules.css">
 
 <main class="home-main">

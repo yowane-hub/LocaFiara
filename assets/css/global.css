@@ -1,10 +1,11 @@
+
 /* Feuille de style globale - LocaFiara             */
 /* Rôle : Réinitialisation et structure de base      */
-
+ 
 * {
     box-sizing: border-box;
 }
-
+ 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8fafc;
@@ -15,7 +16,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-
+ 
 /* Conteneur principal large et fluide pour ne pas serrer les éléments */
 main {
     flex: 1;
@@ -33,11 +34,11 @@ header {
     z-index: 1000; /* Garantit que le header reste au-dessus de tout le contenu */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ajoute une légère ombre élégante en scrollant */
 }
-
+ 
 /* ==========================================================================
    SYSTÈME DE THÈME CLAIR / SOMBRE (LocaFiara)
    ========================================================================== */
-
+ 
 /* 1. Couleurs par défaut (Mode Clair) */
 :root {
     --bg-main: #f8fafc;
@@ -47,7 +48,7 @@ header {
     --border-color: #e2e8f0;
     --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
-
+ 
 /* 2. Couleurs pour le Mode Sombre (Dark Mode) */
 [data-theme="dark"] {
     --bg-main: #0b1329;        /* Fond général sombre et profond */
@@ -57,14 +58,14 @@ header {
     --border-color: #27354f;   /* Bordures discrètes */
     --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
-
+ 
 /* Application globale du fond et de la couleur de texte */
 body {
     background-color: var(--bg-main) !important;
     color: var(--text-main) !important;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
+ 
 /* ==========================================================================
    3. ADAPTATION FORCÉE DES CARTES ET CONTENEURS EN MODE SOMBRE
    ========================================================================== */
@@ -83,7 +84,7 @@ body {
     border-color: var(--border-color) !important;
     box-shadow: var(--card-shadow) !important;
 }
-
+ 
 /* ==========================================================================
    4. CORRECTION DE LA VISIBILITÉ DES TEXTES EN MODE SOMBRE
    ========================================================================== */
@@ -99,7 +100,7 @@ body {
 [data-theme="dark"] .auth-container h3 {
     color: #ffffff !important;
 }
-
+ 
 /* Forcer les paragraphes, descriptions et éléments de liste à être bien lisibles */
 [data-theme="dark"] p, 
 [data-theme="dark"] span:not(.badge-promo), 
@@ -109,7 +110,7 @@ body {
 [data-theme="dark"] small {
     color: var(--text-muted) !important;
 }
-
+ 
 /* ==========================================================================
    5. STYLE DU BOUTON DE BASCULE DANS LE HEADER
    ========================================================================== */
@@ -128,10 +129,29 @@ body {
     vertical-align: middle;
     margin-left: 10px;
 }
-
+ 
 .theme-toggle-btn:hover {
     background-color: rgba(255, 255, 255, 0.25);
     border-color: #ffffff;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+ 
+ 
+/* ==========================================================================
+   RESPONSIVE (global.css)
+   ========================================================================== */
+img, video { max-width: 100%; height: auto; }
+body { overflow-x: hidden; }
+ 
+@media (max-width: 992px) {
+    main { padding: 30px 20px; }
+}
+@media (max-width: 768px) {
+    main { padding: 24px 15px; }
+}
+@media (max-width: 480px) {
+    main { padding: 18px 12px; }
+    .theme-toggle-btn { padding: 5px 10px; font-size: 14px; margin-left: 5px; }
+}
+ 

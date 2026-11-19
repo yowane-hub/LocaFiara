@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // 4. Inclusion de l'en-tête du site
 require_once 'includes/header.php';
 ?>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Liaison vers le fichier CSS externe -->
 <link rel="stylesheet" href="assets/css/login.css">
 

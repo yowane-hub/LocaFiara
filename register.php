@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 require_once 'includes/header.php';
 ?>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Liaison vers le fichier CSS de style (ou login.css partagé) -->
 <link rel="stylesheet" href="assets/css/register.css">
 <link rel="stylesheet" href="assets/css/login.css">

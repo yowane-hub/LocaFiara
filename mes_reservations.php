@@ -37,7 +37,7 @@ $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Inclusion de l'en-tête de la page
 require_once 'includes/header.php';
 ?>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Inclusion de la feuille de style externe -->
 <link rel="stylesheet" href="assets/css/mes_reservation.css">
 

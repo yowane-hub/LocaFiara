@@ -1,8 +1,9 @@
+
 /*
  * Fichier : admin.css
  * Rôle : Styles spécifiques pour l'espace d'administration de LocaFiara
  */
-
+ 
 /* 
    1. Barre de navigation de l'administration (Admin Header)
 */
@@ -15,7 +16,7 @@
     align-items: center;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
-
+ 
 /* Logo et badge de l'espace administrateur */
 .admin-logo a {
     font-size: 22px;
@@ -26,7 +27,7 @@
     align-items: center;
     gap: 8px;
 }
-
+ 
 .admin-logo .badge-admin {
     font-size: 11px;
     background-color: #3b82f6;
@@ -37,14 +38,14 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
+ 
 /* Liens du menu de navigation admin */
 .admin-nav-links {
     display: flex;
     gap: 25px;
     align-items: center;
 }
-
+ 
 .admin-nav-links a {
     color: #ffffff;
     text-decoration: none;
@@ -52,11 +53,11 @@
     font-size: 14px;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
-
+ 
 .admin-nav-links a:hover {
    color: #facc15; /* Jaune doré au survol */
 }
-
+ 
 /* Bouton pour basculer vers le site public */
 .admin-link-site {
     color: #e2e8f0;
@@ -65,12 +66,12 @@
     border-radius: 4px;
     font-size: 13px;
 }
-
+ 
 .admin-link-site:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
 }
-
+ 
 /* ==========================================================================
    Style net et professionnel pour le bouton Mode Sombre dans l'admin aussi
    ========================================================================== */
@@ -89,7 +90,7 @@
     vertical-align: middle;
     margin-left: 10px;
 }
-
+ 
 /* Effet net et lumineux au survol avec la souris */
 .theme-toggle-btn:hover {
     background-color: rgba(255, 255, 255, 0.25);
@@ -97,3 +98,29 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+ 
+/* ==========================================================================
+   RESPONSIVE (admin.css)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .admin-header-container { padding: 15px 25px; }
+    .admin-nav-links { gap: 18px; }
+}
+@media (max-width: 768px) {
+    .admin-header-container {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 15px;
+    }
+    .admin-nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 16px;
+    }
+    .admin-logo a { font-size: 20px; }
+}
+@media (max-width: 480px) {
+    .admin-nav-links a { font-size: 13px; }
+    .admin-logo .badge-admin { font-size: 10px; margin-left: 6px; }
+}
+ 

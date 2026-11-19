@@ -1,22 +1,23 @@
+
 /*
  * Fichier : admin_driver.css
  * Rôle : Styles pour la gestion des chauffeurs dans l'admin
  */
-
+ 
 .admin-main {
     max-width: 1100px;
     margin: 48px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
+ 
 .admin-main h1 {
     color: #1e3a8a;
     font-size: 26px;
     font-weight: 800;
     margin-bottom: 5px;
 }
-
+ 
 .admin-main .back-link {
     display: inline-block;
     margin-bottom: 25px;
@@ -24,11 +25,11 @@
     text-decoration: none;
     font-weight: 600;
 }
-
+ 
 .admin-main .back-link:hover {
     color: #1e3a8a;
 }
-
+ 
 /* Messages d'alerte */
 .alert-success {
     background: #d1fae5;
@@ -38,7 +39,7 @@
     margin-bottom: 20px;
     font-weight: 600;
 }
-
+ 
 .alert-error {
     background: #fee2e2;
     color: #dc2626;
@@ -47,7 +48,7 @@
     margin-bottom: 20px;
     font-weight: 600;
 }
-
+ 
 /* Formulaire */
 .form-card {
     background: #ffffff;
@@ -57,17 +58,17 @@
     margin-bottom: 35px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
-
+ 
 .form-card h3 {
     color: #1e3a8a;
     margin-bottom: 20px;
     font-size: 18px;
 }
-
+ 
 .form-group-admin {
     margin-bottom: 15px;
 }
-
+ 
 .form-group-admin label {
     display: block;
     font-weight: 700;
@@ -76,7 +77,7 @@
     margin-bottom: 6px;
     text-transform: uppercase;
 }
-
+ 
 .form-group-admin input,
 .form-group-admin select {
     width: 100%;
@@ -87,14 +88,14 @@
     box-sizing: border-box;
     background-color: #ffffff;
 }
-
+ 
 .form-group-admin input:focus,
 .form-group-admin select:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-
+ 
 .btn-submit {
     background: #1e3a8a;
     color: white;
@@ -107,11 +108,11 @@
     font-size: 15px;
     transition: background 0.2s;
 }
-
+ 
 .btn-submit:hover {
     background: #1e40af;
 }
-
+ 
 /* Grille des chauffeurs */
 .section-title {
     color: #1e3a8a;
@@ -119,13 +120,13 @@
     font-weight: 700;
     margin-bottom: 20px;
 }
-
+ 
 .drivers-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
 }
-
+ 
 .driver-card {
     background: white;
     border: 1px solid #e5e7eb;
@@ -136,20 +137,20 @@
     flex-direction: column;
     justify-content: space-between;
 }
-
+ 
 .driver-card h4 {
     color: #1e3a8a;
     margin: 0 0 10px 0;
     font-size: 18px;
     font-weight: 700;
 }
-
+ 
 .driver-info {
     margin: 6px 0;
     font-size: 14px;
     color: #4b5563;
 }
-
+ 
 /* Actions */
 .driver-actions {
     padding-top: 15px;
@@ -158,7 +159,7 @@
     border-top: 1px solid #f3f4f6;
     margin-top: 15px;
 }
-
+ 
 .btn-edit {
     flex: 1;
     text-align: center;
@@ -171,11 +172,11 @@
     font-weight: 600;
     transition: background-color 0.2s ease;
 }
-
+ 
 .btn-edit:hover {
     background-color: #2563eb;
 }
-
+ 
 .btn-delete {
     flex: 1;
     text-align: center;
@@ -188,7 +189,24 @@
     font-weight: 600;
     transition: background-color 0.2s ease;
 }
-
+ 
 .btn-delete:hover {
     background-color: #dc2626;
 }
+ 
+/* ==========================================================================
+   RESPONSIVE (admin_drivers.css)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .admin-main { margin: 25px auto; padding: 0 15px; }
+    .admin-main h1 { font-size: 22px; }
+    .form-card { padding: 20px; }
+    .drivers-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+}
+@media (max-width: 480px) {
+    .drivers-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 16px; }
+    .form-group-admin input, .form-group-admin select { font-size: 16px; }
+    .section-title { font-size: 19px; }
+}
+ 

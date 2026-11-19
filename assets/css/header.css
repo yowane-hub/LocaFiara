@@ -1,3 +1,4 @@
+
 /* Style de l'en-tête (Header) */
 .site-header {
     background-color: #1e3a8a;
@@ -8,7 +9,7 @@
     align-items: center;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
-
+ 
 /* Style du Logo */
 .site-logo {
     font-size: 22px;
@@ -19,18 +20,18 @@
     align-items: center;
     gap: 8px;
 }
-
+ 
 .site-logo span {
     color: #facc15;
 }
-
+ 
 /* Navigation principale */
 .site-nav {
     display: flex;
     align-items: center;
     gap: 25px;
 }
-
+ 
 .site-nav a {
     color: #ffffff;
     text-decoration: none;
@@ -38,18 +39,18 @@
     font-size: 14px;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
-
+ 
 .site-nav a:hover {
     color: #facc15;
 }
-
+ 
 /* Message de bienvenue */
 .user-greeting {
     color: #fef08a;
     font-weight: 600;
     font-size: 14px;
 }
-
+ 
 /* Bouton Inscription (Jaune) */
 .site-nav a.btn-inscription {
     background-color: #facc15;
@@ -58,12 +59,12 @@
     border-radius: 12px;
     font-weight: 700;
 }
-
+ 
 .site-nav a.btn-inscription:hover {
     background-color: #eab308;
     color: #1e3a8a !important;
 }
-
+ 
 /* ==========================================================================
    Style net et professionnel pour le bouton Mode Sombre dans le Header
    ========================================================================== */
@@ -82,7 +83,7 @@
     vertical-align: middle;
     margin-left: 10px;
 }
-
+ 
 /* Effet net et lumineux au survol avec la souris */
 .theme-toggle-btn:hover {
     background-color: rgba(255, 255, 255, 0.25);
@@ -90,3 +91,31 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+ 
+ 
+/* ==========================================================================
+   RESPONSIVE (header.css)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .site-header { padding: 15px 25px; }
+    .site-nav { gap: 18px; }
+}
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 15px;
+    }
+    .site-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 16px;
+    }
+    .site-logo { font-size: 20px; }
+}
+@media (max-width: 480px) {
+    .site-nav a { font-size: 13px; }
+    .site-nav a.btn-inscription { padding: 8px 14px; border-radius: 10px; }
+    .user-greeting { font-size: 13px; width: 100%; text-align: center; }
+}
+ 

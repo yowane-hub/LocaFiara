@@ -1,7 +1,8 @@
+
 /*
    Style de la facture PDF / Impression (assets/css/facture.css)
  */
-
+ 
 body {
     background-color: #f1f5f9;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -9,7 +10,7 @@ body {
     margin: 0;
     padding: 30px;
 }
-
+ 
 .invoice-container {
     max-width: 800px;
     margin: 0 auto;
@@ -18,47 +19,47 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
-
+ 
 .invoice-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 }
-
+ 
 .company-info h1 {
     color: #1e3a8a;
     margin: 0 0 5px 0;
     font-size: 28px;
 }
-
+ 
 .company-info p {
     margin: 2px 0;
     color: #64748b;
     font-size: 13px;
 }
-
+ 
 .invoice-meta {
     text-align: right;
 }
-
+ 
 .invoice-meta h2 {
     color: #0f172a;
     margin: 0 0 5px 0;
     font-size: 22px;
 }
-
+ 
 .invoice-meta p {
     margin: 2px 0;
     font-size: 13px;
     color: #475569;
 }
-
+ 
 .divider {
     border: none;
     border-top: 1px solid #e2e8f0;
     margin: 25px 0;
 }
-
+ 
 .client-section {
     margin-bottom: 30px;
     background-color: #f8fafc;
@@ -66,25 +67,25 @@ body {
     border-radius: 8px;
     border-left: 4px solid #1e3a8a;
 }
-
+ 
 .client-section h3 {
     margin: 0 0 8px 0;
     font-size: 14px;
     color: #334155;
     text-transform: uppercase;
 }
-
+ 
 .client-section p {
     margin: 3px 0;
     font-size: 14px;
 }
-
+ 
 .invoice-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 30px;
 }
-
+ 
 .invoice-table th {
     background-color: #1e3a8a;
     color: white;
@@ -92,35 +93,35 @@ body {
     padding: 12px 15px;
     font-size: 13px;
 }
-
+ 
 .invoice-table td {
     padding: 15px;
     border-bottom: 1px solid #e2e8f0;
     font-size: 14px;
 }
-
+ 
 .invoice-total {
     text-align: right;
     margin-bottom: 40px;
 }
-
+ 
 .invoice-total p {
     margin: 5px 0;
     font-size: 16px;
 }
-
+ 
 .invoice-total strong {
     font-size: 20px;
     color: #1e3a8a;
 }
-
+ 
 .status-paid {
     color: #059669;
     font-weight: 700;
     font-size: 13px !important;
     letter-spacing: 0.5px;
 }
-
+ 
 .invoice-footer {
     text-align: center;
     border-top: 1px dashed #cbd5e1;
@@ -128,14 +129,14 @@ body {
     color: #64748b;
     font-size: 13px;
 }
-
+ 
 .actions-bar {
     margin-top: 30px;
     display: flex;
     justify-content: center;
     gap: 15px;
 }
-
+ 
 .btn-print {
     background-color: #059669;
     color: white;
@@ -147,11 +148,11 @@ body {
     font-size: 14px;
     transition: background 0.2s;
 }
-
+ 
 .btn-print:hover {
     background-color: #047857;
 }
-
+ 
 .btn-back {
     background-color: #e2e8f0;
     color: #334155;
@@ -162,11 +163,11 @@ body {
     font-size: 14px;
     transition: background 0.2s;
 }
-
+ 
 .btn-back:hover {
     background-color: #cbd5e1;
 }
-
+ 
 /* Cache les boutons lors de l'impression physique / sauvegarde PDF native du navigateur */
 @media print {
     body {
@@ -181,3 +182,26 @@ body {
         display: none !important;
     }
 }
+ 
+/* ==========================================================================
+   RESPONSIVE (facture.css) - uniquement à l'écran, l'impression reste intacte
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    body { padding: 15px; }
+    .invoice-container { padding: 25px 20px; }
+    .invoice-table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+@media screen and (max-width: 600px) {
+    .invoice-header { flex-direction: column; gap: 20px; }
+    .invoice-meta { text-align: left; }
+    .company-info h1 { font-size: 24px; }
+}
+@media screen and (max-width: 480px) {
+    body { padding: 8px; }
+    .invoice-container { padding: 18px 14px; border-radius: 8px; }
+    .invoice-table th, .invoice-table td { padding: 10px; font-size: 12px; }
+    .invoice-total { text-align: left; }
+    .actions-bar { flex-direction: column; }
+    .btn-print, .btn-back { width: 100%; text-align: center; }
+}
+ 

@@ -1,14 +1,15 @@
+
 /* ========================================================================
    Design Moderne de la Page d'Accueil - LocaFiara (accueil.css)
    ======================================================================== */
-
+ 
 .home-main {
     max-width: 1250px;
     margin: 40px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
+ 
 .hero-section {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
@@ -21,14 +22,14 @@
     border: 1px solid #e2e8f0;
     overflow: hidden;
 }
-
+ 
 /* Partie Gauche : Texte */
 .hero-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-
+ 
 .badge-promo {
     background: #eff6ff;
     color: #1d4ed8;
@@ -40,7 +41,7 @@
     margin-bottom: 20px;
     border: 1px solid #dbeafe;
 }
-
+ 
 .hero-content h1 {
     font-size: 38px;
     color: #0f172a;
@@ -48,25 +49,25 @@
     margin-bottom: 20px;
     font-weight: 800;
 }
-
+ 
 .hero-content h1 span {
     color: #1e3a8a;
 }
-
+ 
 .hero-content p {
     color: #475569;
     font-size: 16px;
     line-height: 1.6;
     margin-bottom: 25px;
 }
-
+ 
 .hero-features {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 35px;
 }
-
+ 
 .feature-item {
     font-size: 14px;
     font-weight: 600;
@@ -75,14 +76,14 @@
     align-items: center;
     gap: 8px;
 }
-
+ 
 /* Boutons d'action */
 .hero-buttons {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
 }
-
+ 
 .btn-primary {
     background-color: #1e3a8a;
     color: white;
@@ -94,12 +95,12 @@
     transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
 }
-
+ 
 .btn-primary:hover {
     background-color: #1e40af;
     transform: translateY(-2px);
 }
-
+ 
 .btn-secondary {
     background-color: #f1f5f9;
     color: #334155;
@@ -111,12 +112,12 @@
     border: 1px solid #cbd5e1;
     transition: all 0.2s ease;
 }
-
+ 
 .btn-secondary:hover {
     background-color: #e2e8f0;
     transform: translateY(-2px);
 }
-
+ 
 /* Partie Droite : Visuel Dynamique 360° */
 .hero-visual {
     display: flex;
@@ -124,7 +125,7 @@
     align-items: center;
     position: relative;
 }
-
+ 
 .car-360-wrapper {
     position: relative;
     width: 100%;
@@ -133,7 +134,7 @@
     padding: 40px;
     border-radius: 20px;
 }
-
+ 
 /* Animation dynamique de la voiture (effet de rotation/flottement sophistiqué) */
 .car-dynamic-img {
     max-width: 100%;
@@ -141,7 +142,7 @@
     filter: drop-shadow(0 20px 30px rgba(15, 23, 42, 0.2));
     animation: dynamicRotateFloat 6s ease-in-out infinite;
 }
-
+ 
 @keyframes dynamicRotateFloat {
     0%, 100% { 
         transform: translateY(0) rotate(0deg) scale(1); 
@@ -150,7 +151,7 @@
         transform: translateY(-12px) rotate(1deg) scale(1.02); 
     }
 }
-
+ 
 /* Badge 360° élégant */
 .badge-360 {
     position: absolute;
@@ -169,7 +170,7 @@
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
+ 
 .pulse-dot {
     width: 8px;
     height: 8px;
@@ -178,13 +179,13 @@
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
     animation: pulse 1.5s infinite;
 }
-
+ 
 @keyframes pulse {
     0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
     70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
-
+ 
 /* Responsive pour mobiles */
 @media (max-width: 992px) {
     .hero-section {
@@ -200,3 +201,27 @@
         justify-content: center;
     }
 }
+ 
+/* ==========================================================================
+   RESPONSIVE (index.css) - complète le @media 992px existant
+   ========================================================================== */
+@media (max-width: 768px) {
+    .home-main { margin: 25px auto; padding: 0 15px; }
+    .hero-section { padding: 25px 20px; gap: 30px; border-radius: 18px; }
+    .hero-content h1 { font-size: 30px; }
+    .hero-content p { font-size: 15px; }
+    .car-360-wrapper { padding: 25px 15px; }
+}
+@media (max-width: 480px) {
+    .home-main { margin: 15px auto; padding: 0 10px; }
+    .hero-section { padding: 20px 15px; border-radius: 16px; }
+    .hero-content h1 { font-size: 24px; }
+    .hero-buttons { flex-direction: column; }
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
+    }
+    .badge-360 { font-size: 11px; padding: 6px 12px; }
+}
+ 

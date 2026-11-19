@@ -1,32 +1,33 @@
+
 /*
  * Fichier : index.css
  * Rôle : Styles pour la page d'accueil et le catalogue public
  */
-
+ 
 .home-main {
     max-width: 1100px;
     margin: 40px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
+ 
 .home-header {
     margin-bottom: 30px;
     text-align: left;
 }
-
+ 
 .home-header h1 {
     color: #1e3a8a;
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 8px;
 }
-
+ 
 .home-header p {
     color: #4b5563;
     font-size: 15px;
 }
-
+ 
 /* --- Boutons de filtrage par catégorie --- */
 .filter-container {
     display: flex;
@@ -34,7 +35,7 @@
     margin-bottom: 35px;
     flex-wrap: wrap;
 }
-
+ 
 .filter-btn {
     padding: 10px 22px;
     border-radius: 20px;
@@ -46,25 +47,25 @@
     transition: all 0.2s ease;
     border: 1px solid #e5e7eb;
 }
-
+ 
 .filter-btn:hover {
     background-color: #e5e7eb;
     color: #1e3a8a;
 }
-
+ 
 .filter-btn.active {
     background-color: #1e3a8a;
     color: #ffffff;
     border-color: #1e3a8a;
 }
-
+ 
 /* --- Grille des véhicules --- */
 .vehicles-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
 }
-
+ 
 .car-card {
     background: #ffffff;
     border: 1px solid #e5e7eb;
@@ -76,12 +77,12 @@
     justify-content: space-between;
     transition: transform 0.2s ease;
 }
-
+ 
 .car-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
 }
-
+ 
 /* Vignette image */
 .car-thumb {
     width: 100%;
@@ -91,13 +92,13 @@
     margin-bottom: 15px;
     background-color: #f3f4f6;
 }
-
+ 
 .car-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
+ 
 .car-thumb .no-image {
     width: 100%;
     height: 100%;
@@ -108,7 +109,7 @@
     font-style: italic;
     font-size: 14px;
 }
-
+ 
 /* Badge de catégorie */
 .car-badge {
     background-color: #3b82f6;
@@ -122,20 +123,20 @@
     width: fit-content;
     text-transform: uppercase;
 }
-
+ 
 .car-title {
     color: #1e3a8a;
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 8px;
 }
-
+ 
 .car-plate {
     font-size: 14px;
     color: #4b5563;
     margin-bottom: 15px;
 }
-
+ 
 /* Pied de carte (Prix et Bouton Réserver) */
 .car-footer {
     display: flex;
@@ -145,13 +146,13 @@
     border-top: 1px solid #f3f4f6;
     margin-top: auto;
 }
-
+ 
 .price-value {
     font-weight: 700;
     color: #1e3a8a;
     font-size: 16px;
 }
-
+ 
 .btn-reserve {
     background-color: #1e3a8a;
     color: white;
@@ -162,7 +163,33 @@
     font-weight: 600;
     transition: background-color 0.2s ease;
 }
-
+ 
 .btn-reserve:hover {
     background-color: #1e40af;
 }
+ 
+/* ==========================================================================
+   RESPONSIVE (vehicules.css)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .vehicles-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+}
+@media (max-width: 768px) {
+    .home-main { margin: 25px auto; padding: 0 15px; }
+    .home-header h1 { font-size: 24px; }
+    .filter-container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .filter-btn { white-space: nowrap; padding: 9px 18px; }
+}
+@media (max-width: 480px) {
+    .vehicles-grid { grid-template-columns: 1fr; gap: 18px; }
+    .home-header h1 { font-size: 21px; }
+    .car-thumb { height: 160px; }
+    .car-footer { flex-wrap: wrap; gap: 10px; }
+    .btn-reserve { padding: 10px 16px; }
+}
+ 
