@@ -3,7 +3,7 @@
  * Fichier : includes/header.php
  * Rôle : En-tête global du site avec la barre de navigation stylée
  */
-
+ 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -17,22 +17,31 @@ if (session_status() === PHP_SESSION_NONE) {
     
     <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/menu.css?v=2">
 </head>
 <body>
-
+ 
 <header class="site-header">
     <a href="index.php" class="site-logo">
         🚗 Loca<span>Fiara</span>
     </a>
-
-    <nav class="site-nav">
+ 
+    <button type="button" id="menu-toggle" class="menu-toggle-btn" aria-label="Ouvrir le menu" aria-controls="main-nav" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="5" cy="12" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="19" cy="12" r="2"></circle>
+        </svg>
+    </button>
+ 
+    <nav class="site-nav" id="main-nav">
         <a href="index.php">Accueil</a>
         <a href="vehicules.php">Nos Véhicules</a>
-
+ 
         <?php if (isset($_SESSION['user_id'])): ?>
             <!-- Liens si l'utilisateur est connecté -->
             <a href="mes_reservations.php">Mes Réservations</a>
-
+ 
             <!-- 🔒 Lien affiché UNIQUEMENT si l'utilisateur est un administrateur -->
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                 <a href="admin_dashboard.php" style="color: #f59e0b; font-weight: 700;">Espace Admin</a>
@@ -45,18 +54,19 @@ if (session_status() === PHP_SESSION_NONE) {
             
             <!-- Bouton Déconnexion -->
             <a href="logout.php" style="background-color: #ef4444; color: #ffffff; padding: 10px 20px; border-radius: 12px; font-weight: 700; text-decoration: none;">Déconnexion</a>
-
+ 
         <?php else: ?>
             <!-- Liens si l'utilisateur est un visiteur -->
             <a href="login.php">Connexion</a>
             <a href="register.php" class="btn-inscription">Inscription</a>
         <?php endif; ?>
-
+ 
         <!-- Bouton Dark Mode -->
         <button id="theme-toggle" class="theme-toggle-btn" title="Changer de thème">
             🌙
         </button>
     </nav>
-
+ 
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/menu.js"></script>
 </header>

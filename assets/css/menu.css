@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Fichier : assets/css/menu.css
+   Rôle : Menu repliable "..." sur téléphone / tablette
+          (utilisé par l'en-tête du site ET par l'en-tête admin)
+   ========================================================================== */
+ 
+/* --- Ordinateur : le bouton "..." est caché --- */
+.menu-toggle-btn {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background-color 0.2s ease;
+}
+ 
+.menu-toggle-btn:hover,
+.menu-toggle-btn[aria-expanded="true"] {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+ 
+/* --- Tablette portrait et smartphone (768px et moins) --- */
+@media (max-width: 768px) {
+ 
+    /* Logo à gauche, bouton "..." à droite, sur une seule ligne */
+    .site-header,
+    .admin-header-container {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 12px 15px !important;
+        gap: 0 !important;
+    }
+ 
+    /* Repère pour placer le panneau du menu (l'en-tête public est déjà "sticky") */
+    .admin-header-container { position: relative; }
+ 
+    /* Le bouton "..." devient visible */
+    .menu-toggle-btn { display: inline-flex !important; }
+ 
+    /* Le menu est caché par défaut et s'ouvre en panneau sous l'en-tête */
+    .site-nav,
+    .admin-nav-links {
+        display: none !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        flex-wrap: nowrap;
+        gap: 4px;
+        padding: 12px 15px 18px;
+        background-color: #1e3a8a;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
+    }
+ 
+    /* Menu ouvert (la classe "open" est ajoutée par menu.js) */
+    .site-nav.open,
+    .admin-nav-links.open { display: flex !important; }
+ 
+    .site-nav a,
+    .site-nav .user-greeting,
+    .admin-nav-links a {
+        display: block;
+        padding: 12px 10px;
+        text-align: center;
+        font-size: 15px;
+        border-radius: 8px;
+    }
+ 
+    .site-nav a:hover,
+    .admin-nav-links a:hover { background-color: rgba(255, 255, 255, 0.08); }
+ 
+    .site-nav .theme-toggle-btn,
+    .admin-nav-links .theme-toggle-btn {
+        align-self: center;
+        margin: 8px 0 0 0;
+    }
+}
+ 

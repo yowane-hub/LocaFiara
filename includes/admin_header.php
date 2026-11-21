@@ -16,6 +16,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Feuilles de style globales et spécifiques admin -->
     <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/menu.css?v=2">
 </head>
 <body>
     <header>
@@ -28,9 +29,17 @@ if (session_status() === PHP_SESSION_NONE) {
                     <span class="badge-admin">Admin</span>
                 </a>   
             </div>
-
+ 
             <!-- Menu de navigation de gestion -->
-            <nav class="admin-nav-links">
+            <button type="button" id="menu-toggle" class="menu-toggle-btn" aria-label="Ouvrir le menu" aria-controls="main-nav" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="5" cy="12" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="19" cy="12" r="2"></circle>
+        </svg>
+    </button>
+ 
+    <nav class="admin-nav-links" id="main-nav">
                 <a href="admin_dashboard.php">Tableau de bord</a>
                 <a href="admin_vehicule.php">Gérer les Véhicules</a>
                 
@@ -44,8 +53,9 @@ if (session_status() === PHP_SESSION_NONE) {
                     🌙
                 </button>
             </nav>
-
+ 
         </div>
         <script src="assets/js/theme.js"></script>
-
+        <script src="assets/js/menu.js"></script>
+ 
     </header>
