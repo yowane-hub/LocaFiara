@@ -104,6 +104,80 @@
 .eye-btn:hover {
     color: #1e3a8a;
 }
+
+.forgot-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -10px;
+    margin-bottom: 18px;
+}
+
+.forgot-link {
+    background: none;
+    border: none;
+    color: #1e3a8a;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+}
+
+.forgot-link:hover {
+    color: #1e40af;
+}
+
+.forgot-box {
+    display: none;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.forgot-box.is-open {
+    display: block;
+}
+
+.forgot-box h2 {
+    font-size: 17px;
+    color: #1e3a8a;
+    margin-bottom: 6px;
+}
+
+.forgot-help {
+    font-size: 13px;
+    color: #4b5563;
+    margin-bottom: 14px;
+}
+
+.btn-secondary-auth {
+    background-color: #1e3a8a;
+}
+
+.btn-secondary-auth:hover {
+    background-color:#1e40af;
+}
+
+.alert-success {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.recovered-pass {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    background: #d1fae5;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 15px;
+}
  
 /* ==========================================================================
    RESPONSIVE (login.css)
@@ -122,3 +196,5 @@
     .form-control { font-size: 16px; } /* évite le zoom automatique sur iPhone */
 }
  
+
+
